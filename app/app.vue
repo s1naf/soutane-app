@@ -1,44 +1,77 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'; // Πρόσθεσε τα ref και computed
 
-// 1. Ρυθμίσεις SEO
+// 1. Ρυθμίσεις SEO (όπως και πριν)
 useHead({
   title: 'Χειροποίητα Εκκλησιαστικά Κεντήματα | [Όνομα Φίλης]',
   meta: [
-    { name: 'description', content: 'Χειροποίητα εκκλησιαστικά κεντήματα φτιαγμένα με παραδοσιακές τεχνικές και υλικά υψηλής ποιότητας.' },
+    { name: 'description', content: 'Χειροποίητα εκκλησιαστικά κεντήματα φτιαγμένα με παραδοσιακές τεχνικές.' },
     { name: 'keywords', content: 'εκκλησιαστικα κεντηματα, χειροποιητα κεντηματα, ραπτικη, χρυσοκεντηματα' }
-    // ... (και τα άλλα meta tags που είχαμε)
   ],
-  // ... (οι γραμματοσειρές μένουν ίδιες)
+  link: [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap', rel: 'stylesheet' }
+  ]
 });
 
-// 3. Τα δεδομένα μας. Αντί να τα γράφουμε στο HTML, τα βάζουμε εδώ.
-// Εδώ θα βάλεις τις φωτογραφίες και τα κείμενα της φίλης σου.
-const galleryItems = [
+// 2. Η μεταβλητή που "θυμάται" το φίλτρο. Ξεκινάει με 'All'.
+const activeCategory = ref('All');
+
+// 3. Τα δεδομένα μας, ΤΩΡΑ ΜΕ 'category'
+const allItems = [
   {
-    image: '/images/Screenshot_1.png', // Από το /public/images/
+    category: 'Bio', // <-- Η νέα κατηγορία
+    image: '/images/Screenshot_1.png',
     title: 'Βιογραφικό',
-    description: 'Λίγα λόγια για εμένα, την πορεία μου και την αγάπη μου για την παραδοσιακή ραπτική.',
+    description: 'Λίγα λόγια για την τέχνη του χειροποίητου εκκλησιαστικού κεντήματος.',
     date: 'Η ΦΙΛΟΣΟΦΙΑ ΜΟΥ'
   },
   {
+    category: 'Samples', // <-- Η νέα κατηγορία
     image: '/images/Screenshot_2.png',
-    title: 'Ράσο τύπου Α (Κλασικό)',
-    description: 'Κατασκευασμένο από 100% Ιταλικό ύφασμα, με έμφαση στην άνεση και την αντοχή.',
-    date: 'ΔΕΙΓΜΑΤΑ'
+    title: 'Κέντημα Εικόνας',
+    description: 'Κατασκευασμένο με χρυσοκλωστή και μεταξωτές κλωστές.',
+    date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
   },
   {
+    category: 'Samples', // <-- Κι άλλο δείγμα
     image: '/images/Screenshot_3.png',
-    title: 'Λεπτομέρεια Ραφής',
+    title: 'Λεπτομέρεια Υφάσματος',
     description: 'Κάθε βελονιά γίνεται στο χέρι, εξασφαλίζοντας μοναδική ποιότητα.',
     date: 'Η ΤΕΧΝΗ ΜΑΣ'
   },
   {
+    category: 'Contact', // <-- Η νέα κατηγορία
     image: '/images/Screenshot_4.png',
     title: 'Επικοινωνία',
-    description: 'Επικοινωνήστε μαζί μου για ειδικές παραγγελίες ή για να συζητήσουμε τις ανάγκες σας.',
+    description: 'Επικοινωνήστε μαζί μου για ειδικές παραγγελίες και αποκαταστάσεις.',
     date: 'ΕΠΙΚΟΙΝΩΝΙΑ'
+  },
+  // Πρόσθεσε όσα άλλα θες...
+  {
+    category: 'Samples',
+    image: '/images/Screenshot_5.png',
+    title: 'Κάλυμμα Αγίας Τραπέζης',
+    description: 'Με χειροποίητο κέντημα του σταυρού.',
+    date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
   }
 ];
+
+// 4. Η "μαγική" φιλτραρισμένη λίστα
+const filteredItems = computed(() => {
+  // Αν το φίλτρο είναι 'All', δείξ' τα όλα
+  if (activeCategory.value === 'All') {
+    return allItems;
+  }
+  // Αλλιώς, φίλτραρε τη λίστα
+  return allItems.filter(item => item.category === activeCategory.value);
+});
+
+const isShrinking = ref(false)
+watch(() => filteredItems.value.length, (next, prev) => {
+  if (prev !== undefined) isShrinking.value = next < prev
+})
 </script>
 
 <template>
@@ -46,46 +79,97 @@ const galleryItems = [
 
     <header class="main-header">
       <div class="logo">
-        Η Τέχνη της [Όνομα Φίλης]
+        Χειροποίητα Κεντήματα Κωνσταντίνα
       </div>
       <nav class="main-nav">
         <span>Filter:</span>
-        <a href="#" class="active">All</a>
-        <a href="#">Βιογραφικό</a>
-        <a href="#">Δείγματα</a>
-        <a href="#">Επικοινωνία</a>
+        <button 
+          type="button" 
+          @click="activeCategory = 'All'" 
+          :class="{ active: activeCategory === 'All' }">
+          All
+        </button>
+        <button 
+          type="button" 
+          @click="activeCategory = 'Bio'" 
+          :class="{ active: activeCategory === 'Bio' }">
+          Βιογραφικο
+        </button>
+        <button 
+          type="button" 
+          @click="activeCategory = 'Samples'" 
+          :class="{ active: activeCategory === 'Samples' }">
+          Δείγματα
+        </button>
+        <button 
+          type="button" 
+          @click="activeCategory = 'Contact'" 
+          :class="{ active: activeCategory === 'Contact' }">
+          Επικοινωνία
+        </button>
       </nav>
     </header>
 
-    <main class="content-grid">
-
-      <article v-for="item in galleryItems" :key="item.title" class="grid-item">
-
+    <TransitionGroup 
+      tag="main" 
+      name="list" 
+      :class="['content-grid', { 'is-shrinking': isShrinking }]"
+    >
+      
+      <article v-for="item in filteredItems" :key="item.title" class="grid-item">
+        
         <div class="item-image">
-          <NuxtImg
-              :src="item.image"
-              :alt="item.title"
-              format="webp"
-              quality="80"
-              loading="lazy"
+          <NuxtImg 
+            :src="item.image" 
+            :alt="item.title" 
+            format="webp" 
+            quality="80"
+            loading="lazy"
           />
         </div>
-
-        <h3 class="item-title">{{ item.title }}</h3>
+        
+        <!-- <h3 class="item-title" @click="activeCategory = item.category">
+          {{ item.title }}
+        </h3>
+        <p class="item-description">{{ item.description }}</p>
+        <p class="item-date">{{ item.date }}</p> -->
+      
+        <h3 
+          class="item-title" 
+          :class="{ 'is-clickable': activeCategory !== item.category }"
+          @click="activeCategory = item.category">
+          {{ item.title }}
+        </h3>
         <p class="item-description">{{ item.description }}</p>
         <p class="item-date">{{ item.date }}</p>
 
+
       </article>
 
-    </main>
+    </TransitionGroup>
 
-    <footer class="main-footer">
+   <!-- <section id="contact" class="contact-section">
+      <div class="container">
+        <h2>Επικοινωνία</h2>
+        <p>Για παραγγελίες, ερωτήσεις ή ειδικές κατασκευές, μη διστάσετε να επικοινωνήσετε.</p>
+        <div class="contact-details">
+          <p><strong>Email:</strong> info@domainfilis.gr</p>
+          <p><strong>Τηλέφωνο:</strong> 210 123 4567</p>
+          <p><strong>Διεύθυνση:</strong> [Όνομα Οδού 123, Πόλη]</p>
+        </div>
+      </div>
+    </section> -->
+
+   <footer class="main-footer">
+      
       <div class="footer-brand">
-        [Όνομα Φίλης] © 2025
+        Κωνσταντίνα © 2025
       </div>
+      
       <div class="footer-credits">
-        Curated by [Το Όνομά σου]
+        Curated by Theofanis
       </div>
+      
     </footer>
 
   </div>
@@ -131,6 +215,32 @@ const galleryItems = [
   gap: 8px;
   font-size: 1.1rem;
 }
+
+.main-nav button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif; /* Να έχει την ίδια γραμματοσειρά */
+  font-size: 1.1rem; /* Ίδιο μέγεθος με πριν */
+  font-weight: 500;
+  color: #1a1a1a;
+  transition: color 0.2s ease;
+  text-align: right; /* Να είναι δεξιά στοιχισμένα */
+}
+
+.main-nav button:hover {
+  color: #666;
+}
+
+/* Αυτό είναι το στυλ για το κουμπί που είναι πατημένο */
+.main-nav button.active {
+  color: #000;
+  text-decoration: underline; /* Το υπογραμμίζουμε για να φαίνεται */
+  text-underline-offset: 4px; /* Λίγο κενό στην υπογράμμιση */
+}
+
 .main-nav span {
   color: #888; /* Το "Filter:" είναι γκρι */
 }
@@ -153,13 +263,19 @@ const galleryItems = [
   /* * Αυτή είναι η μαγεία: 4 στήλες.
    * Σε μικρότερες οθόνες, θα το αλλάξουμε (δες @media παρακάτω)
   */
-  grid-template-columns: repeat(4, 1fr);
+
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
   gap: 30px; /* Κενό μεταξύ των στηλών και γραμμών */
+  position: relative;
 }
 
 .grid-item {
   /* Δεν χρειάζεται καθόλου styling (πλαίσια, σκιές, κλπ) */
   /* Το design είναι "γυμνό" */
+  width: 100%; /* <-- ΠΡΟΣΘΕΣΕ ΑΥΤΟ */
+  max-width: 360px; /* <-- ΠΡΟΣΘΕΣΕ ΑΥΤΟ (το νούμερο του desktop) */
 }
 
 .item-image {
@@ -182,6 +298,20 @@ const galleryItems = [
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0 0 8px 0;
+  /* 'cursor: pointer' ΕΦΥΓΕ ΑΠΟ ΕΔΩ */
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+
+/* * Μόνο όταν το item ΕΙΝΑΙ clickable, 
+ * βάζουμε τον cursor και το hover effect.
+*/
+.item-title.is-clickable {
+  cursor: pointer;
+}
+
+.item-title.is-clickable:hover {
+  color: #666;
 }
 
 .item-description {
@@ -214,14 +344,54 @@ const galleryItems = [
   color: #666;
 }
 
+/* --- Transitions για το Grid (List) --- */
+
+
+.list-enter-active {
+  transition: all 0.6s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. Leave (από πολλά σε λίγα) - ΠΟΛΥ ΓΡΗΓΟΡΑ */
+.list-leave-active {
+  transition: all 0.2s cubic-bezier(0.55, 0, 0.1, 1);
+  /* Όταν μειώνονται τα items, κάνε absolute */
+  position: absolute;
+}
+
+/* Όταν ΑΥΞΑΝΟΝΤΑΙ τα items, κράτα relative */
+.content-grid:not(.is-shrinking) .list-leave-active {
+  position: relative;
+}
+
+/* 3. Move (Το "γλίστρημα") - ΜΕΤΡΙΑ ΤΑΧΥΤΗΤΑ */
+.list-move {
+  transition: transform  0.6s cubic-bezier(0.55, 0, 0.1, 1);
+  /* 3. Move (Το "γλίστρημα") - ΣΥΓΧΡΟΝΙΣΜΕΝΟ */
+}
+
+/* 4. Πώς μπαίνουν τα νέα items */
+.list-enter-from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* 5. Πώς φεύγουν τα παλιά items */
+.list-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+
 /* --- Responsive Design (Για Κινητά) --- */
 
 /* Για Tablets */
 @media (max-width: 1024px) {
-  .content-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 στήλες */
-    gap: 25px;
-  }
+/* * ΣΒΗΣΕ ΑΥΤΑ ΤΑ 3:
+   * .content-grid {
+   * grid-template-columns: repeat(2, 1fr); 
+   * gap: 25px;
+   * }
+   */
   .page-wrapper {
     padding: 0 25px;
   }
@@ -229,10 +399,12 @@ const galleryItems = [
 
 /* Για Κινητά */
 @media (max-width: 640px) {
-  .content-grid {
-    grid-template-columns: 1fr; /* 1 στήλη */
-    gap: 40px; /* Μεγαλύτερο κενό κάθετα */
-  }
+/* * ΣΒΗΣΕ ΑΥΤΑ ΤΑ 3:
+   * .content-grid {
+   * grid-template-columns: 1fr; 
+   * gap: 40px;
+   * }
+   */
   .page-wrapper {
     padding: 0 20px;
   }
@@ -243,6 +415,9 @@ const galleryItems = [
   }
   .main-nav {
     align-items: flex-start;
+  }
+  .main-nav button {
+    text-align: left; /* Αριστερή στοίχιση στα κινητά */
   }
   .item-title {
     font-size: 1.2rem; /* Λίγο μεγαλύτερος τίτλος στα κινητά */
