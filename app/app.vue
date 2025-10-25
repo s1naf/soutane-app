@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'; // Πρόσθεσε τα ref και computed
-
+import { ref, computed, watch, nextTick } from 'vue'; // <-- ΠΡΟΣΘΕΣΕ watch & nextTick
 // 1. Ρυθμίσεις SEO (όπως και πριν)
 useHead({
   title: 'Χειροποίητα Εκκλησιαστικά Κεντήματα | [Όνομα Φίλης]',
@@ -16,62 +15,125 @@ useHead({
 });
 
 // 2. Η μεταβλητή που "θυμάται" το φίλτρο. Ξεκινάει με 'All'.
-const activeCategory = ref('All');
+const activeCategory = ref('Όλα');
 
-// 3. Τα δεδομένα μας, ΤΩΡΑ ΜΕ 'category'
+// 3. (ΝΕΟ) Τα δεδομένα για το Hero Section (Βιογραφικό)
+const bioData = {
+  image: '/images/Screenshot_1.png',
+  title: 'Η Τέχνη μου',
+  // Εμπλουτισμένο κείμενο:
+  description: 'Η τέχνη του εκκλησιαστικού κεντήματος είναι μια προσευχή που γίνεται με χρυσό και μετάξι. Μια γέφυρα που ενώνει την παράδοση αιώνων με τη σύγχρονη αφοσίωση στην τελειότητα.',
+  date: 'Η ΦΙΛΟΣΟΦΙΑ ΜΟΥ'
+};
+
+// 4. (ΝΕΟ) Τα δεδομένα μας ΜΟΝΟ για το grid (χωρίς το Bio)
 const allItems = [
   {
-    category: 'Bio', // <-- Η νέα κατηγορία
-    image: '/images/Screenshot_1.png',
-    title: 'Βιογραφικό',
-    description: 'Λίγα λόγια για την τέχνη του χειροποίητου εκκλησιαστικού κεντήματος.',
-    date: 'Η ΦΙΛΟΣΟΦΙΑ ΜΟΥ'
-  },
-  {
-    category: 'Samples', // <-- Η νέα κατηγορία
+    category: 'Δείγματα',
     image: '/images/Screenshot_2.png',
     title: 'Κέντημα Εικόνας',
-    description: 'Κατασκευασμένο με χρυσοκλωστή και μεταξωτές κλωστές.',
+    description: 'Αποτυπώνοντας το θείο με ιριδίζον μετάξι και χρυσοκλωστή. Κάθε κλωστή, ένας φόρος τιμής στην παράδοση.',
     date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
   },
   {
-    category: 'Samples', // <-- Κι άλλο δείγμα
+    category: 'Δείγματα',
     image: '/images/Screenshot_3.png',
     title: 'Λεπτομέρεια Υφάσματος',
-    description: 'Κάθε βελονιά γίνεται στο χέρι, εξασφαλίζοντας μοναδική ποιότητα.',
+    description: 'Εδώ, ο χρόνος μετριέται σε χιλιάδες βελονιές, καμωμένες μία προς μία στο χέρι για απαράμιλλη λεπτομέρεια.',
     date: 'Η ΤΕΧΝΗ ΜΑΣ'
   },
   {
-    category: 'Contact', // <-- Η νέα κατηγορία
-    image: '/images/Screenshot_4.png',
-    title: 'Επικοινωνία',
-    description: 'Επικοινωνήστε μαζί μου για ειδικές παραγγελίες και αποκαταστάσεις.',
-    date: 'ΕΠΙΚΟΙΝΩΝΙΑ'
-  },
-  // Πρόσθεσε όσα άλλα θες...
-  {
-    category: 'Samples',
+    category: 'Δείγματα',
     image: '/images/Screenshot_5.png',
     title: 'Κάλυμμα Αγίας Τραπέζης',
-    description: 'Με χειροποίητο κέντημα του σταυρού.',
-    date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
-  }
+    description: 'Ο σταυρός, κεντημένος με την παραδοσιακή τεχνική, συμβολίζει την αφοσίωση και την τέχνη.',
+    date: 'ΑΦΟΣΙΩΣΗ ΣΤΗΝ ΤΕΧΝΗ'
+  },
+  {
+    category: 'Επικοινωνία',
+    image: '/images/Screenshot_4.png',
+    title: 'Επικοινωνία',
+    description: 'Έχετε ένα όραμα; Αναλαμβάνω ειδικές παραγγελίες, από νέα άμφια έως την ευλαβική αποκατάσταση παλαιών κεντημάτων.',
+    date: 'ΕΠΙΚΟΙΝΩΝΙΑ'
+  },
 ];
 
-// 4. Η "μαγική" φιλτραρισμένη λίστα
+// 5. Η "μαγική" φιλτραρισμένη λίστα (λειτουργεί όπως πριν)
 const filteredItems = computed(() => {
-  // Αν το φίλτρο είναι 'All', δείξ' τα όλα
-  if (activeCategory.value === 'All') {
+  if (activeCategory.value === 'Όλα') {
     return allItems;
   }
-  // Αλλιώς, φίλτραρε τη λίστα
   return allItems.filter(item => item.category === activeCategory.value);
 });
 
+// 6. Η λογική για το transition (λειτουργεί όπως πριν)
 const isShrinking = ref(false)
 watch(() => filteredItems.value.length, (next, prev) => {
   if (prev !== undefined) isShrinking.value = next < prev
 })
+
+// 7. (ΝΕΟ) Δημιουργούμε ένα ref για να "πιάσουμε" το DOM element του grid
+const gridContainer = ref(null);
+
+// 8. (ΝΕΟ) Μια συνάρτηση που κάνει το scroll
+function scrollToGrid() {
+  // Ελέγχουμε αν το gridContainer υπάρχει
+  if (gridContainer.value) {
+    // Χρησιμοποιούμε τη native browser API για να κάνουμε scroll
+    (gridContainer.value as any).$el.scrollIntoView({
+      behavior: 'smooth', // Για ομαλή κίνηση
+      block: 'start'      // Στοίχιση με την κορυφή του στοιχείου
+    });
+  }
+}
+
+// 9. (ΝΕΟ) "Ακούμε" τις αλλαγές στο activeCategory
+// 9. (ΝΕΟ) Η "έξυπνη" συνάρτηση που θα καλούν τα κουμπιά
+function handleFilterClick(newCategory: string, shouldScroll: boolean = true) {
+  // 1. Άλλαξε το φίλτρο, όπως και να 'χει
+  activeCategory.value = newCategory;
+
+ // 2. Έλεγξε αν πρέπει να κάνει scroll (ΜΟΝΟ αν το shouldScroll είναι true)
+  if (shouldScroll) {
+    if (newCategory === 'All') {
+      // Αν πάτησε "All" (από το header), τον στέλνουμε στην κορυφή
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      // Αν πάτησε "Δείγματα" (από το header), τον στέλνουμε στο grid
+      nextTick(() => {
+        scrollToGrid(); // Αυτό καλεί τη συνάρτηση που φτιάξαμε
+      });
+    }
+  }
+}
+
+// (ΝΕΟ) 1. Η λίστα που καθορίζει τη ΣΕΙΡΑ των φίλτρων
+const filterCategories = ['Όλα', 'Δείγματα', 'Επικοινωνία'];
+
+// (ΝΕΟ) 2. Μια computed property που μας λέει σε ποιο "βήμα" (index) βρισκόμαστε
+const currentFilterIndex = computed(() => {
+  return filterCategories.indexOf(activeCategory.value);
+});
+
+// (ΝΕΟ) 3. Οι συναρτήσεις Next/Prev
+function nextFilter() {
+  const nextIndex = currentFilterIndex.value + 1;
+  if (nextIndex < filterCategories.length) {
+    // Πρόσθεσε το ", false" για να ΜΗΝ κάνει scroll
+    handleFilterClick(filterCategories[nextIndex]!, false);
+  }
+}
+
+function prevFilter() {
+  const prevIndex = currentFilterIndex.value - 1;
+  if (prevIndex >= 0) {
+    // Πρόσθεσε το ", false" για να ΜΗΝ κάνει scroll
+    handleFilterClick(filterCategories[prevIndex]!, false);
+  }
+}
 </script>
 
 <template>
@@ -81,42 +143,87 @@ watch(() => filteredItems.value.length, (next, prev) => {
       <div class="logo">
         Χειροποίητα Κεντήματα Κωνσταντίνα
       </div>
+
+
       <nav class="main-nav">
         <span>Filter:</span>
         <button 
           type="button" 
-          @click="activeCategory = 'All'" 
-          :class="{ active: activeCategory === 'All' }">
-          All
+          @click="handleFilterClick('Όλα')"  
+          :class="{ active: activeCategory === 'Όλα' }">
+          Όλα
         </button>
         <button 
           type="button" 
-          @click="activeCategory = 'Bio'" 
-          :class="{ active: activeCategory === 'Bio' }">
-          Βιογραφικο
-        </button>
-        <button 
-          type="button" 
-          @click="activeCategory = 'Samples'" 
-          :class="{ active: activeCategory === 'Samples' }">
+          @click="handleFilterClick('Δείγματα')" 
+          :class="{ active: activeCategory === 'Δείγματα' }">
           Δείγματα
         </button>
         <button 
           type="button" 
-          @click="activeCategory = 'Contact'" 
-          :class="{ active: activeCategory === 'Contact' }">
+          @click="handleFilterClick('Επικοινωνία')" 
+          :class="{ active: activeCategory === 'Επικοινωνία' }">
           Επικοινωνία
         </button>
+
       </nav>
+    
     </header>
 
-    <TransitionGroup 
+  
+
+    <section class="hero-bio">
+      <div class="hero-content">
+        <p class="hero-date">{{ bioData.date }}</p>
+        <h2 class="hero-title">{{ bioData.title }}</h2>
+        <p class="hero-description">{{ bioData.description }}</p>
+      </div>
+      <div class="hero-image">
+        <NuxtImg 
+          :src="bioData.image" 
+          :alt="bioData.title" 
+          format="webp" 
+          quality="80"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <nav class="filter-stepper-nav">
+      <div class="stepper-prev">
+        <button 
+          type="button" 
+          @click="prevFilter" 
+          :disabled="currentFilterIndex === 0">
+          &lt; {{ filterCategories[currentFilterIndex - 1] }}
+        </button>
+      </div>
+
+      <span class="filter-stepper-label">
+        {{ filterCategories[currentFilterIndex] }}
+      </span>
+
+      <div class="stepper-next">
+        <button 
+          type="button" 
+          @click="nextFilter" 
+          :disabled="currentFilterIndex === filterCategories.length - 1">
+          {{ filterCategories[currentFilterIndex + 1] }} &gt;
+        </button>
+      </div>
+    </nav>
+
+    <TransitionGroup
+      ref="gridContainer" 
       tag="main" 
       name="list" 
       :class="['content-grid', { 'is-shrinking': isShrinking }]"
     >
       
-      <article v-for="item in filteredItems" :key="item.title" class="grid-item">
+      <article 
+          v-for="item in filteredItems"
+          :key="item.title"
+          class="grid-item">
         
         <div class="item-image">
           <NuxtImg 
@@ -257,6 +364,139 @@ watch(() => filteredItems.value.length, (next, prev) => {
   /* Μπορείς να βάλεις ένα styling για το ενεργό φίλτρο */
 }
 
+/* --- Hero Bio Section --- */
+.hero-bio {
+  display: grid;
+  /* 2 στήλες σε desktop */
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 50px;
+  padding: 50px;
+  margin-bottom: 60px; /* Κενό πριν το grid */
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3; /* Ίδια αναλογία με τις κάρτες */
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.hero-content {
+  /* Η σειρά έχει αλλάξει στο template, οπότε δεν χρειάζεται flex-direction */
+}
+
+.hero-date {
+  /* Αντιγραφή από .item-date */
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px 0;
+}
+
+.hero-title {
+  /* Μεγαλύτερος τίτλος */
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+}
+
+.hero-description {
+  /* Μεγαλύτερη περιγραφή */
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #444;
+  line-height: 1.6;
+}
+/* --- ΝΕΟ: Filter Stepper Nav --- */
+.filter-stepper-nav {
+  display: grid;
+  /* Τρεις στήλες: (Κουμπί) - (Label) - (Κουμπί) */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 30px; 
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-stepper-nav button {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px;
+  color: #1a1a1a;
+  transition: color 0.2s ease;
+}
+
+.stepper-prev {
+  justify-self: start;
+}
+/* Στοίχιση για το δεξί κουμπί */
+.stepper-next {
+  justify-self: end;
+}
+
+
+
+.filter-stepper-nav button:hover {
+  color: #666;
+}
+
+.filter-stepper-nav button:disabled {
+  color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.filter-stepper-label {
+  justify-self: center;
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+/* Responsive για το filter-stepper */
+@media (max-width: 640px) {
+  .filter-stepper-label {
+    font-size: 1rem;
+  }
+  .filter-stepper-nav {
+    margin-bottom: 20px;
+    padding: 15px 0;
+  }
+}
+
+
+/* --- Responsive για το Hero --- */
+@media (max-width: 900px) {
+  .hero-bio {
+    /* 1 στήλη σε tablet/κινητά */
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px;
+  }
+  
+  .hero-image {
+    /* Η εικόνα πάει 2η τώρα, οπότε η σειρά είναι σωστή */
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+}
+
+
 /* --- Το Grid με τις Εικόνες --- */
 .content-grid {
   display: grid;
@@ -269,6 +509,8 @@ watch(() => filteredItems.value.length, (next, prev) => {
 
   gap: 30px; /* Κενό μεταξύ των στηλών και γραμμών */
   position: relative;
+  /* justify-items: center; */
+  scroll-margin: 20px;
 }
 
 .grid-item {
