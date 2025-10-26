@@ -457,7 +457,7 @@ onUnmounted(() => {
         <p class="hero-description">{{ bioData.description }}</p>
       </div>
       <div class="hero-image">
-        <NuxtImg 
+        <img 
           :src="bioData.image" 
           :alt="bioData.title" 
           format="webp" 
@@ -503,7 +503,7 @@ onUnmounted(() => {
       <template v-for="item in filteredItems" :key="item?.title">
         <article v-if="item" class="grid-item">
           <div class="item-image">
-            <NuxtImg 
+            <img 
               :src="item.image" 
               :alt="item.title" 
               format="webp" 
@@ -531,7 +531,7 @@ onUnmounted(() => {
     
     <article class="grid-item">
       <div class="item-image">
-        <NuxtImg 
+        <img 
           :src="contactItemData.image" 
           :alt="contactItemData.title" 
           format="webp" 
@@ -605,7 +605,7 @@ onUnmounted(() => {
           @click="openModal(items, index)" >
             <div class="card-item">
               <div class="item-image">
-                <NuxtImg 
+                <img 
                   :src="item.image" 
                   :alt="item.title" 
                   format="webp" 
@@ -672,7 +672,7 @@ onUnmounted(() => {
           </button>
 
           <div class="modal-image-wrapper" v-if="activeModalList[activeModalIndex]">
-            <NuxtImg 
+            <img 
               :src="activeModalList[activeModalIndex]!.image" 
               :alt="activeModalList[activeModalIndex]!.title" 
               format="webp" 
