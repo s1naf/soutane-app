@@ -28,7 +28,7 @@ const bioData = {
   date: 'Η ΦΙΛΟΣΟΦΙΑ ΜΟΥ'
 };
 
-const allItems = const allItems = [
+const allItems = [
   // --- SUB-CATEGORY: ΕΙΚΟΝΕΣ ---
   {
     category: 'Δείγματα',
