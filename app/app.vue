@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue'; // <-- ΠΡΟΣΘΕΣΕ watch & nextTick
-// 1. Ρυθμίσεις SEO (όπως και πριν)
+
+// Βασικές εισαγωγές και composables
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
+
+// Swiper (carousel) components και βασικό CSS
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+
+
+// SEO: βασικές ρυθμίσεις
 useHead({
   title: 'Χειροποίητα Εκκλησιαστικά Κεντήματα | [Όνομα Φίλης]',
   meta: [
@@ -14,10 +22,12 @@ useHead({
   ]
 });
 
-// 2. Η μεταβλητή που "θυμάται" το φίλτρο. Ξεκινάει με 'All'.
+// Κατάσταση: ενεργή κατηγορία φίλτρου
 const activeCategory = ref('Όλα');
 
-// 3. (ΝΕΟ) Τα δεδομένα για το Hero Section (Βιογραφικό)
+
+
+// Δεδομένα Hero (βιογραφικό)
 const bioData = {
   image: '/images/Screenshot_1.png',
   title: 'Η Τέχνη μου',
@@ -26,17 +36,12 @@ const bioData = {
   date: 'Η ΦΙΛΟΣΟΦΙΑ ΜΟΥ'
 };
 
-// 4. (ΝΕΟ) Τα δεδομένα μας ΜΟΝΟ για το grid (χωρίς το Bio)
+// Δεδομένα για το grid (χωρίς το Hero)
 const allItems = [
+  // --- SUB-CATEGORY: ΕΙΚΟΝΕΣ ---
   {
     category: 'Δείγματα',
-    image: '/images/Screenshot_2.png',
-    title: 'Κέντημα Εικόνας',
-    description: 'Αποτυπώνοντας το θείο με ιριδίζον μετάξι και χρυσοκλωστή. Κάθε κλωστή, ένας φόρος τιμής στην παράδοση.',
-    date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
-  },
-  {
-    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
     image: '/images/Screenshot_3.png',
     title: 'Λεπτομέρεια Υφάσματος',
     description: 'Εδώ, ο χρόνος μετριέται σε χιλιάδες βελονιές, καμωμένες μία προς μία στο χέρι για απαράμιλλη λεπτομέρεια.',
@@ -44,13 +49,223 @@ const allItems = [
   },
   {
     category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_1.png',
+    title: 'Ύψωσις Τιμίου Σταυρού',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_2.png',
+    title: 'Κέντημα Εικόνας',
+    description: 'Αποτυπώνοντας το θείο με ιριδίζον μετάξι και χρυσοκλωστή. Κάθε κλωστή, ένας φόρος τιμής στην παράδοση.',
+    date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_6.png',
+    title: 'Άγιος Γεώργιος ο Τροπαιοφόρος',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_7.png',
+    title: 'Εικόνα Αγίου Ιεράρχη',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_9.png',
+    title: 'Άγιος Παΐσιος ο Αγιορείτης',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+   {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_17.png',
+    title: 'Ο Καλός Ποιμήν (Χειροποίητο Πρόσωπο)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+    {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_24.png',
+    title: 'Χριστός Παντοκράτωρ (Κυκλική)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_26.png',
+    title: 'Η Ανάστασις (Μικροκέντημα Σταυροειδές)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_29.png',
+    title: 'Άγιος Ιωάννης ο Ελεήμων (Κάδρο)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Εικόνες',
+    image: '/images/Screenshot_23.png',
+    title: 'Χριστός Παντοκράτωρ (Κυκλική Βυσσινί)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΕΙΚΟΝΕΣ'
+  },
+
+  // --- SUB-CATEGORY: ΑΜΦΙΑ ---
+  {
+    category: 'Δείγματα',
+    subCategory: 'Άμφια',
+    image: '/images/Screenshot_10.png',
+    title: 'Επιτραχήλιο (Σκηνή Σταύρωσης)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΑΜΦΙΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Άμφια',
+    image: '/images/Screenshot_13.png',
+    title: 'Εγκόλπιον Αρχιερατικό (Μικροκέντημα)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΑΜΦΙΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Άμφια',
+    image: '/images/Screenshot_11.png',
+    title: 'Ζεύγος Επιμανικίων (Χερουβείμ)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΑΜΦΙΑ'
+  },
+   {
+    category: 'Δείγματα',
+    subCategory: 'Άμφια',
+    image: '/images/Screenshot_22.png',
+    title: 'Επιτραχήλιο (Κόκκινο)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΑΜΦΙΑ'
+  },
+   {
+    category: 'Δείγματα',
+    subCategory: 'Άμφια',
+    image: '/images/Screenshot_30.png',
+    title: 'Φαιλόνιο (Κόκκινο)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΑΜΦΙΑ'
+  },
+
+  // --- SUB-CATEGORY: ΚΑΛΥΜΜΑΤΑ & ΥΦΑΣΜΑΤΑ ---
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
     image: '/images/Screenshot_5.png',
     title: 'Κάλυμμα Αγίας Τραπέζης',
     description: 'Ο σταυρός, κεντημένος με την παραδοσιακή τεχνική, συμβολίζει την αφοσίωση και την τέχνη.',
     date: 'ΑΦΟΣΙΩΣΗ ΣΤΗΝ ΤΕΧΝΗ'
   },
   {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_16.png',
+    title: 'Η Ανάστασις (Κάλυμμα ή Λάβαρο)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_18.png',
+    title: 'Κάλυμμα Αγίας Τραπέζης (Αρχιερεύς)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_15.png',
+    title: 'Ο Μελισμός (Σετ Αγίας Τραπέζης)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_12.png',
+    title: 'Η Κοίμησις της Θεοτόκου (Επιτάφιος)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_21.png',
+    title: 'Σετ Λειτουργικών Καλυμμάτων (Λευκό)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_25.png',
+    title: 'Επιτάφιος (Βυσσινί Βελούδο)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_27.png',
+    title: 'Κάλυμμα Αγίου Ποτηρίου (Πελεκάνος)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+   {
+    category: 'Δείγματα',
+    subCategory: 'Καλύμματα & Υφάσματα',
+    image: '/images/Screenshot_28.png',
+    title: 'Λεπτομέρεια Κεντήματος Υφάσματος (Βυσσινί)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
+  },
+
+  // --- SUB-CATEGORY: ΛΕΠΤΟΜΕΡΕΙΕΣ & ΣΧΕΔΙΑ ---
+  {
+    category: 'Δείγματα',
+    subCategory: 'Λεπτομέρειες & Σχέδια',
+    image: '/images/Screenshot_8.png',
+    title: 'Λεπτομέρεια Χρυσοκεντήματος (Στάχυ)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'Η ΤΕΧΝΗ ΜΑΣ'
+  },
+  {
+    category: 'Δείγματα',
+    subCategory: 'Λεπτομέρειες & Σχέδια',
+    image: '/images/Screenshot_19.png',
+    title: 'Σχέδιο σε Ύφασμα (Στάχυ)',
+    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
+    date: 'Η ΤΕΧΝΗ ΜΑΣ'
+  },
+  
+  // --- CATEGORY: ΕΠΙΚΟΙΝΩΝΙΑ ---
+  {
     category: 'Επικοινωνία',
+    subCategory: 'Καλύμματα & Υφάσματα',
     image: '/images/Screenshot_4.png',
     title: 'Επικοινωνία',
     description: 'Έχετε ένα όραμα; Αναλαμβάνω ειδικές παραγγελίες, από νέα άμφια έως την ευλαβική αποκατάσταση παλαιών κεντημάτων.',
@@ -58,71 +273,139 @@ const allItems = [
   },
 ];
 
-// 5. Η "μαγική" φιλτραρισμένη λίστα (λειτουργεί όπως πριν)
+// Φιλτραρισμένη λίστα items
 const filteredItems = computed(() => {
+  // --- "ΟΛΑ" ---
   if (activeCategory.value === 'Όλα') {
-    return allItems;
+    const item2 = allItems.find(item => item.image === '/images/Screenshot_2.png');
+    const item1 = allItems.find(item => item.image === '/images/Screenshot_5.png');
+    const item3 = allItems.find(item => item.image === '/images/Screenshot_3.png');
+    const contactItem = allItems.find(item => item.category === 'Επικοινωνία');
+    return [item2, item1, item3, contactItem].filter(Boolean); // Φιλτράρει τυχόν null
   }
+  
+  // --- "ΔΕΙΓΜΑΤΑ" ---
+  if (activeCategory.value === 'Δείγματα') {
+    const item2 = allItems.find(item => item.image === '/images/Screenshot_2.png');
+    const item1 = allItems.find(item => item.image === '/images/Screenshot_5.png');
+    const item3 = allItems.find(item => item.image === '/images/Screenshot_3.png');
+    return [item1, item2, item3].filter(Boolean); // Φιλτράρει τυχόν null
+  }
+  
+  // --- "ΕΠΙΚΟΙΝΩΝΙΑ" (ή οτιδήποτε άλλο) ---
   return allItems.filter(item => item.category === activeCategory.value);
 });
 
-// 6. Η λογική για το transition (λειτουργεί όπως πριν)
+// Ταξινόμηση/σειρά φίλτρων
+const filterCategories = ['Όλα', 'Δείγματα', 'Επικοινωνία'];
+
+// Υπολογισμός τρέχοντος index φίλτρου
+const currentFilterIndex = computed(() => {
+  return filterCategories.indexOf(activeCategory.value);
+});
+
+// Μετρητής για transitions (χρήσιμο για leave/enter)
 const isShrinking = ref(false)
 watch(() => filteredItems.value.length, (next, prev) => {
   if (prev !== undefined) isShrinking.value = next < prev
 })
 
-// 7. (ΝΕΟ) Δημιουργούμε ένα ref για να "πιάσουμε" το DOM element του grid
+// Refs για DOM elements
 const gridContainer = ref(null);
 
-// 8. (ΝΕΟ) Μια συνάρτηση που κάνει το scroll
+// Ref για το container με τα Reels
+const reelsContainerRef = ref(null);
+
+// Ref για το section "Επικοινωνία"
+const contactContainer = ref(null);
+
+// Ορατότητα για Reels
+const showReels = ref(false);
+
+// Ομαδοποίηση "Δείγματα" ανά subCategory
+const groupedSampleItems = computed(() => {
+  const samples = allItems.filter(item => item.category === 'Δείγματα');
+  
+  return samples.reduce((acc, item) => {
+    // Αν δεν υπάρχει subCategory, απλά αγνόησέ το
+    if (!item.subCategory) {
+      return acc; 
+    }
+    
+    const key = item.subCategory; // Παίρνουμε το κλειδί
+    
+    if (!acc[key]) {
+      acc[key] = []; 
+    }
+    acc[key].push(item);
+    return acc;
+  }, {} as Record<string, typeof allItems>);
+});
+
+// Toggle εμφάνισης των Reels και ομαλό scroll στο container
+function toggleReelsView() {
+  // Αποθηκεύουμε την τρέχουσα κατάσταση
+  const wasHidden = !showReels.value;
+  
+  // Αλλάζουμε την κατάσταση (από true σε false ή το αντίστροφο)
+  showReels.value = !showReels.value;
+
+  // Αν η κατάσταση ΗΤΑΝ "κρυμμένη" (και τώρα την ΑΝΟΙΞΑΜΕ)...
+  if (wasHidden) {
+    // ...κάνε scroll στο container
+    nextTick(() => {
+      if (reelsContainerRef.value) {
+        (reelsContainerRef.value as HTMLElement).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  }
+}
+// Συναρτήσεις Scroll
 function scrollToGrid() {
-  // Ελέγχουμε αν το gridContainer υπάρχει
   if (gridContainer.value) {
-    // Χρησιμοποιούμε τη native browser API για να κάνουμε scroll
     (gridContainer.value as any).$el.scrollIntoView({
-      behavior: 'smooth', // Για ομαλή κίνηση
-      block: 'start'      // Στοίχιση με την κορυφή του στοιχείου
+      behavior: 'smooth',
+      block: 'start'
     });
   }
 }
 
-// 9. (ΝΕΟ) "Ακούμε" τις αλλαγές στο activeCategory
-// 9. (ΝΕΟ) Η "έξυπνη" συνάρτηση που θα καλούν τα κουμπιά
+function scrollToContact() {
+  if (contactContainer.value) {
+    (contactContainer.value as HTMLElement).scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+}
+
+// Κεντρικός χειριστής αλλαγής φίλτρων
 function handleFilterClick(newCategory: string, shouldScroll: boolean = true) {
-  // 1. Άλλαξε το φίλτρο, όπως και να 'χει
+  showReels.value = false; // "Μηδενίζει" τα reels
   activeCategory.value = newCategory;
 
- // 2. Έλεγξε αν πρέπει να κάνει scroll (ΜΟΝΟ αν το shouldScroll είναι true)
   if (shouldScroll) {
-    if (newCategory === 'All') {
-      // Αν πάτησε "All" (από το header), τον στέλνουμε στην κορυφή
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    } else {
-      // Αν πάτησε "Δείγματα" (από το header), τον στέλνουμε στο grid
-      nextTick(() => {
-        scrollToGrid(); // Αυτό καλεί τη συνάρτηση που φτιάξαμε
-      });
+    if (newCategory === 'Όλα') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } 
+    else if (newCategory === 'Δείγματα') { 
+      nextTick(() => { scrollToGrid(); });
+    } 
+    else if (newCategory === 'Επικοινωνία') { 
+      nextTick(() => { scrollToContact(); });
     }
   }
 }
 
-// (ΝΕΟ) 1. Η λίστα που καθορίζει τη ΣΕΙΡΑ των φίλτρων
-const filterCategories = ['Όλα', 'Δείγματα', 'Επικοινωνία'];
+// Λογική stepper φίλτρων
 
-// (ΝΕΟ) 2. Μια computed property που μας λέει σε ποιο "βήμα" (index) βρισκόμαστε
-const currentFilterIndex = computed(() => {
-  return filterCategories.indexOf(activeCategory.value);
-});
 
-// (ΝΕΟ) 3. Οι συναρτήσεις Next/Prev
 function nextFilter() {
   const nextIndex = currentFilterIndex.value + 1;
   if (nextIndex < filterCategories.length) {
-    // Πρόσθεσε το ", false" για να ΜΗΝ κάνει scroll
     handleFilterClick(filterCategories[nextIndex]!, false);
   }
 }
@@ -130,10 +413,65 @@ function nextFilter() {
 function prevFilter() {
   const prevIndex = currentFilterIndex.value - 1;
   if (prevIndex >= 0) {
-    // Πρόσθεσε το ", false" για να ΜΗΝ κάνει scroll
     handleFilterClick(filterCategories[prevIndex]!, false);
   }
 }
+// --- Modal state ---
+const isModalOpen = ref(false);
+const activeModalList = ref<typeof allItems>([]); // Η λίστα της υπο-κατηγορίας που βλέπουμε
+const activeModalIndex = ref(0);
+
+// Άνοιγμα modal με βάση τη λίστα και το index
+function openModal(itemsList: typeof allItems, clickedIndex: number) {
+  activeModalList.value = itemsList;
+  activeModalIndex.value = clickedIndex;
+  isModalOpen.value = true;
+}
+
+// 3. Συνάρτηση που κλείνει το Modal
+function closeModal() {
+  isModalOpen.value = false;
+}
+
+// 4. Συναρτήσεις πλοήγησης (Next/Prev) μέσα στο Modal
+function nextModalItem() {
+  if (activeModalIndex.value < activeModalList.value.length - 1) {
+    activeModalIndex.value++;
+  }
+}
+function prevModalItem() {
+  if (activeModalIndex.value > 0) {
+    activeModalIndex.value--;
+  }
+}
+
+// 5. (BONUS) Πλοήγηση με βελάκια πληκτρολογίου
+function handleKeydown(e: KeyboardEvent) {
+  if (!isModalOpen.value) return; // Αν δεν είναι ανοιχτό το modal, μην κάνεις τίποτα
+
+  if (e.key === 'ArrowRight') {
+    nextModalItem();
+  } else if (e.key === 'ArrowLeft') {
+    prevModalItem();
+  } else if (e.key === 'Escape') {
+    closeModal();
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown);
+});
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+});
+
+const contactItemData = computed(() => {
+  // Βρίσκουμε το item της επικοινωνίας από την αρχική λίστα
+  return allItems.find(item => item.category === 'Επικοινωνία');
+});
+
+
+
 </script>
 
 <template>
@@ -215,57 +553,134 @@ function prevFilter() {
 
     <TransitionGroup
       ref="gridContainer" 
-      tag="main" 
-      name="list" 
+      tag="main"
+      name="list"
       :class="['content-grid', { 'is-shrinking': isShrinking }]"
+      v-if="activeCategory !== 'Επικοινωνία'"
     >
-      
-      <article 
-          v-for="item in filteredItems"
-          :key="item.title"
-          class="grid-item">
-        
-        <div class="item-image">
-          <NuxtImg 
-            :src="item.image" 
-            :alt="item.title" 
-            format="webp" 
-            quality="80"
-            loading="lazy"
-          />
-        </div>
-        
-        <!-- <h3 class="item-title" @click="activeCategory = item.category">
-          {{ item.title }}
-        </h3>
-        <p class="item-description">{{ item.description }}</p>
-        <p class="item-date">{{ item.date }}</p> -->
-      
-        <h3 
-          class="item-title" 
-          :class="{ 'is-clickable': activeCategory !== item.category }"
-          @click="activeCategory = item.category">
-          {{ item.title }}
-        </h3>
-        <p class="item-description">{{ item.description }}</p>
-        <p class="item-date">{{ item.date }}</p>
-
-
-      </article>
-
+      <template v-for="item in filteredItems" :key="item?.title">
+        <article v-if="item" class="grid-item">
+          <div class="item-image">
+            <NuxtImg 
+              :src="item.image" 
+              :alt="item.title" 
+              format="webp" 
+              quality="80"
+              loading="lazy"
+            />
+          </div>
+          <h3 
+            class="item-title" 
+            :class="{ 'is-clickable': activeCategory !== item.category }"
+            @click="activeCategory = item.category"> 
+            {{ item.title }} 
+          </h3>
+          <p class="item-description">{{ item.description }}</p> 
+          <p class="item-date">{{ item.date }}</p> 
+        </article>
+      </template>
     </TransitionGroup>
 
-   <!-- <section id="contact" class="contact-section">
-      <div class="container">
-        <h2>Επικοινωνία</h2>
-        <p>Για παραγγελίες, ερωτήσεις ή ειδικές κατασκευές, μη διστάσετε να επικοινωνήσετε.</p>
-        <div class="contact-details">
-          <p><strong>Email:</strong> info@domainfilis.gr</p>
-          <p><strong>Τηλέφωνο:</strong> 210 123 4567</p>
-          <p><strong>Διεύθυνση:</strong> [Όνομα Οδού 123, Πόλη]</p>
+    <section
+      ref="contactContainer" 
+      v-else-if="activeCategory === 'Επικοινωνία' && contactItemData"
+      class="contact-view"
+    >
+    
+    <article class="grid-item">
+      <div class="item-image">
+        <NuxtImg 
+          :src="contactItemData.image" 
+          :alt="contactItemData.title" 
+          format="webp" 
+          quality="80"
+          loading="lazy"
+        />
+      </div>
+      <h3 class="item-title">{{ contactItemData.title }}</h3>
+      <p class="item-description">{{ contactItemData.description }}</p>
+      <p class="item-date">{{ contactItemData.date }}</p>
+    </article>
+
+  <div class="contact-info-panel">
+      <div class="contact-details-list">
+        <div class="contact-item">
+          <strong>Τηλέφωνο:</strong>
+          <span class="contact-styled-text">210 123 4567</span>
+        </div>
+        <div class="contact-item">
+          <strong>Email:</strong>
+          <span class="contact-styled-text">info@domainfilis.gr</span>
+        </div>
+        <div class="contact-item">
+          <strong>Διεύθυνση:</strong>
+          <span>Οδός Δείγματος 12, 123 45, Αθήνα</span>
         </div>
       </div>
-    </section> -->
+      <div class="contact-map">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d201217.1565171796!2d23.57321526462707!3d37.99083200870933!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bd1f067043f1%3A0x2736354576668ddd!2sAthens!5e0!3m2!1sen!2sgr!4v1730009475168!5m2!1sen!2sgr" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+  </div>
+</section>
+  
+ 
+
+  
+  <section
+    v-if="activeCategory === 'Δείγματα'"
+    ref="reelsContainerRef" 
+    :class="['reels-wrapper', { 'is-expanded': showReels }]"
+  >
+    <div class="reels-content">
+      <div 
+        v-for="(items, categoryName) in groupedSampleItems" 
+        :key="categoryName"
+        class="reel-category"
+      >
+        <h2 class="reel-category-title">{{ categoryName }}</h2>
+        <Swiper
+          :slides-per-view="'auto'"
+          :space-between="20"
+        >
+        <SwiperSlide 
+          v-for="(item, index) in items" :key="item.title"
+          class="reel-slide"
+          @click="openModal(items, index)" >
+            <div class="card-item">
+              <div class="item-image">
+                <NuxtImg 
+                  :src="item.image" 
+                  :alt="item.title" 
+                  format="webp" 
+                  quality="80"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="item-title">{{ item.title }}</h3>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+    </div>
+    <div class="reels-controller">
+      <hr v-if="showReels" />
+      <button type="button" @click="toggleReelsView" class="reels-toggle-button">
+        <span v-if="!showReels">Προβολή ανά Κατηγορία</span>
+        <span v-else>Απόκρυψη</span>
+      </button>
+    </div>
+
+  </section>
+
+   
 
    <footer class="main-footer">
       
@@ -279,13 +694,58 @@ function prevFilter() {
       
     </footer>
 
-  </div>
+    <Transition name="modal-fade">
+      <div 
+        v-if="isModalOpen" 
+        class="modal-backdrop" 
+        @click.self="closeModal"
+      >
+        <div class="modal-content">
+          
+          <button type="button" @click="closeModal" class="modal-close-btn">&times;</button>
+          
+          <button 
+            type="button" 
+            class="modal-nav modal-prev"
+            @click="prevModalItem"
+            :disabled="activeModalIndex === 0"
+          >
+            &lt;
+          </button>
+          
+          <button 
+            type="button" 
+            class="modal-nav modal-next"
+            @click="nextModalItem"
+            :disabled="activeModalIndex >= activeModalList.length - 1"
+          >
+            &gt;
+          </button>
+
+          <div class="modal-image-wrapper" v-if="activeModalList[activeModalIndex]">
+            <NuxtImg 
+              :src="activeModalList[activeModalIndex]!.image" 
+              :alt="activeModalList[activeModalIndex]!.title" 
+              format="webp" 
+              quality="90"
+              width="1200" style="max-height: 90vh; width: auto; max-width: 100%;"
+            />
+            <p class="modal-caption">
+              {{ activeModalList[activeModalIndex]!.title }}
+            </p>
+          </div>
+          
+        </div>
+      </div>
+    </Transition>
+    </div> 
+    
+
+ 
 </template>
 
 <style scoped>
-/* * Αυτό είναι το CSS που "χτίζει" το design.
- * Βασίζεται στη γραμματοσειρά 'Inter' που φορτώσαμε.
-*/
+/* Βασικό CSS που "χτίζει" το design (Inter font) */
 
 /* --- Γενική Δομή --- */
 :global(body) {
@@ -341,7 +801,7 @@ function prevFilter() {
   color: #666;
 }
 
-/* Αυτό είναι το στυλ για το κουμπί που είναι πατημένο */
+/* Στυλ ενεργού κουμπιού */
 .main-nav button.active {
   color: #000;
   text-decoration: underline; /* Το υπογραμμίζουμε για να φαίνεται */
@@ -367,7 +827,6 @@ function prevFilter() {
 /* --- Hero Bio Section --- */
 .hero-bio {
   display: grid;
-  /* 2 στήλες σε desktop */
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
   gap: 50px;
@@ -390,7 +849,6 @@ function prevFilter() {
 }
 
 .hero-date {
-  /* Αντιγραφή από .item-date */
   font-size: 0.8rem;
   font-weight: 500;
   color: #888;
@@ -414,10 +872,63 @@ function prevFilter() {
   color: #444;
   line-height: 1.6;
 }
-/* --- ΝΕΟ: Filter Stepper Nav --- */
+
+/* --- Contact View Section --- */
+.contact-view {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  
+  /* Το "μαξιλαράκι" για το scroll (όπως και στο .content-grid) */
+  scroll-margin-top: 20px; 
+}
+
+.contact-info-panel {
+  /* Αυτή είναι η δεξιά στήλη */
+}
+
+.contact-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding-top: 10px; /* Λίγο κενό για να ευθυγραμμιστεί */
+}
+
+.contact-item {
+  font-size: 1rem;
+}
+.contact-item strong {
+  display: block;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 4px;
+}
+.contact-item span {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.contact-styled-text {
+  color: #1a1a1a;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  transition: border-color 0.2s ease;
+}
+.contact-item a:hover {
+  border-color: #1a1a1a;
+}
+
+.contact-map {
+  width: 100%;
+  height: 300px; /* Ή όσο ύψος θέλουμε */
+  background-color: #f0f0f0; /* Placeholder */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* --- Filter Stepper Nav --- */
 .filter-stepper-nav {
   display: grid;
-  /* Τρεις στήλες: (Κουμπί) - (Label) - (Κουμπί) */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 20px 0;
@@ -481,7 +992,6 @@ function prevFilter() {
 /* --- Responsive για το Hero --- */
 @media (max-width: 900px) {
   .hero-bio {
-    /* 1 στήλη σε tablet/κινητά */
     grid-template-columns: 1fr;
     gap: 30px;
     padding: 30px;
@@ -500,19 +1010,120 @@ function prevFilter() {
 /* --- Το Grid με τις Εικόνες --- */
 .content-grid {
   display: grid;
-  /* * Αυτή είναι η μαγεία: 4 στήλες.
-   * Σε μικρότερες οθόνες, θα το αλλάξουμε (δες @media παρακάτω)
-  */
-
-  /* grid-template-columns: repeat(4, 1fr); */
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
   gap: 30px; /* Κενό μεταξύ των στηλών και γραμμών */
   position: relative;
   /* justify-items: center; */
-  scroll-margin: 20px;
+  scroll-margin-top: 20px;
+}
+.show-more-wrapper { /* <-- ΣΩΣΤΟ (με τελεία) */
+text-align: center;
+margin: 40px 0;
+}
+.show-more-button {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.show-more-button:hover {
+  background-color: #444;
 }
 
+/* --- CSS για τη "Card" (card-item) --- */
+.card-item {
+  width: 100%; 
+  max-width: 360px; 
+}
+
+/* --- ΝΕΟ CSS ΓΙΑ ΤΑ REELS --- */
+.reels-wrapper { /* ΣΩΣΤΟ ΟΝΟΜΑ (ίδιο με το template) */
+/* Αυτός είναι ο νέος στόχος του scroll */
+scroll-margin-top: 20px;
+width: 100%;
+}
+.reels-content {
+  max-height: 300px; /* Ξεκινάει "κλειστό" (teaser) */
+  overflow: hidden;
+  transition: max-height 0.6s ease-in-out;
+  
+  /* * ΑΥΤΟ ΕΙΝΑΙ ΤΟ "ΑΧΝΟΦΑΙΝΕΣΘΑΙ"
+   * Δημιουργεί μια μάσκα που "σβήνει" το περιεχόμενο στο κάτω μέρος.
+  */
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.reels-wrapper.is-expanded .reels-content {
+  max-height: 10000px; /* "Ανοίγει" (ένας μεγάλος αριθμός) */
+  -webkit-mask-image: none; /* Αφαιρεί τη μάσκα */
+  mask-image: none;
+}
+
+.reels-wrapper {
+  position: relative;
+  scroll-margin-top: 20px; /* Το κρατάμε για το scroll */
+  margin-top: 40px; /* Κενό από το grid */
+}
+
+.reels-controller {
+  text-align: center;
+  margin-top: -30px; /* Το τραβάει λίγο προς τα πάνω */
+  position: relative; /* Για να είναι πάνω από τη μάσκα */
+  z-index: 2; /* Πάνω από τη μάσκα, κάτω από το περιεχόμενο */
+  
+  /* Όταν ανοίξει, παίρνει τη φυσιολογική του θέση */
+  transition: margin-top 0.6s ease;
+}
+.reels-wrapper.is-expanded .reels-controller {
+  margin-top: 20px; /* Πάει στο κάτω μέρος */
+}
+
+.reels-controller hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin-bottom: 20px;
+}
+.reels-toggle-button {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.reels-toggle-button:hover {
+  background-color: #444;
+}
+
+.reel-category {
+  margin-bottom: 40px; /* Κενό μεταξύ των carousels */
+}
+
+.reel-category-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Αυτό ορίζει το πλάτος της κάθε κάρτας στο carousel */
+.reel-slide {
+  width: 320px; /* Μπορείς να παίξεις με αυτό το νούμερο */
+  max-width: 100%;
+}
 .grid-item {
   /* Δεν χρειάζεται καθόλου styling (πλαίσια, σκιές, κλπ) */
   /* Το design είναι "γυμνό" */
@@ -521,19 +1132,21 @@ function prevFilter() {
 }
 
 .item-image {
-  background-color: #f0f0f0; /* Ένα placeholder χρώμα όσο φορτώνει η εικόνα */
+  background-color: #f0f0f0;
   margin-bottom: 12px;
+  display: block; /* Σημαντικό */
+  
+  /* --- Η ΔΙΟΡΘΩΣΗ ΕΙΝΑΙ ΕΔΩ --- */
+  aspect-ratio: 4 / 3; /* Το "κουτί" παίρνει την αναλογία */
+  overflow: hidden; /* Κρύβει ό,τι περισσεύει */
+  border-radius: 4px; /* (Προαιρετικό, αλλά όμορφο) */
 }
 .item-image img {
-  /* Αυτό κάνει την εικόνα να γεμίζει το div */
   width: 100%;
-  height: auto;
-  /* * Κρατάμε μια αναλογία π.χ. 4:3.
-   * Μπορείς να το αλλάξεις ή να το βγάλεις αν οι εικόνες σου έχουν άλλες αναλογίες.
-  */
-  aspect-ratio: 4 / 3;
-  object-fit: cover; /* Κόβει την εικόνα για να ταιριάξει, αντί να παραμορφώνεται */
+  height: 100%;
+  object-fit: cover; 
   display: block;
+  /* (Βγάλαμε το aspect-ratio από εδώ) */
 }
 
 .item-title {
@@ -545,9 +1158,7 @@ function prevFilter() {
   transition: color 0.2s ease;
 }
 
-/* * Μόνο όταν το item ΕΙΝΑΙ clickable, 
- * βάζουμε τον cursor και το hover effect.
-*/
+/* Μόνο όταν το item είναι clickable βάζουμε cursor/hover */
 .item-title.is-clickable {
   cursor: pointer;
 }
@@ -571,6 +1182,113 @@ function prevFilter() {
   text-transform: uppercase; /* ΚΕΦΑΛΑΙΑ, όπως στο design */
   letter-spacing: 0.5px;
   margin: 0;
+}
+
+/* --- CSS ΓΙΑ ΤΟ MODAL --- */
+
+/* Το "σβήσιμο" (Fade) */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+
+/* 1. Το Μαύρο Φόντο (Backdrop) */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 2. Το Κουτί του Modal (Content) */
+.modal-content {
+  position: relative;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  max-width: 90vw;
+  max-height: 95vh;
+  box-shadow: none;
+}
+
+/* 3. Η Εικόνα και ο Τίτλος */
+.modal-image-wrapper {
+  text-align: center;
+}
+.modal-image-wrapper img {
+  display: block; 
+  border-radius: 8px; /* <-- ΑΛΛΑΓΗ (Η εικόνα παίρνει το radius) */
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3); /* (Για να ξεχωρίζει) */
+}
+.modal-caption {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff; /* <-- ΑΛΛΑΓΗ (Να φαίνεται στο μαύρο) */
+  margin-top: 15px;
+}
+
+/* 4. Τα Κουμπιά (Close & Nav) */
+.modal-close-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1002;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.2s ease;
+}
+.modal-nav:hover {
+  background-color: #fff;
+}
+.modal-nav:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.modal-prev {
+  left: -50px;
+}
+.modal-next {
+  right: -50px;
+}
+
+/* 5. Κάνε τα Slides "clickable" */
+.reel-slide {
+  width: 320px; 
+  max-width: 100%;
+  cursor: pointer; /* Δείχνει ότι πατιέται */
 }
 
 /* --- Footer --- */
@@ -608,7 +1326,6 @@ function prevFilter() {
 /* 3. Move (Το "γλίστρημα") - ΜΕΤΡΙΑ ΤΑΧΥΤΗΤΑ */
 .list-move {
   transition: transform  0.6s cubic-bezier(0.55, 0, 0.1, 1);
-  /* 3. Move (Το "γλίστρημα") - ΣΥΓΧΡΟΝΙΣΜΕΝΟ */
 }
 
 /* 4. Πώς μπαίνουν τα νέα items */
@@ -628,12 +1345,6 @@ function prevFilter() {
 
 /* Για Tablets */
 @media (max-width: 1024px) {
-/* * ΣΒΗΣΕ ΑΥΤΑ ΤΑ 3:
-   * .content-grid {
-   * grid-template-columns: repeat(2, 1fr); 
-   * gap: 25px;
-   * }
-   */
   .page-wrapper {
     padding: 0 25px;
   }
@@ -641,17 +1352,11 @@ function prevFilter() {
 
 /* Για Κινητά */
 @media (max-width: 640px) {
-/* * ΣΒΗΣΕ ΑΥΤΑ ΤΑ 3:
-   * .content-grid {
-   * grid-template-columns: 1fr; 
-   * gap: 40px;
-   * }
-   */
   .page-wrapper {
     padding: 0 20px;
   }
   .main-header {
-    flex-direction: column; /* Το μενού μπαίνει κάτω από το logo */
+    flex-direction: column;
     gap: 20px;
     align-items: flex-start;
   }
@@ -664,5 +1369,38 @@ function prevFilter() {
   .item-title {
     font-size: 1.2rem; /* Λίγο μεγαλύτερος τίτλος στα κινητά */
   }
+  
+
 }
+
+/* Responsive για το Contact View */
+@media (max-width: 900px) {
+  .contact-view {
+    grid-template-columns: 1fr; /* 1 στήλη σε tablet/κινητά */
+    gap: 40px;
+  }
+}
+
+/* --- Responsive για το Modal --- */
+@media (max-width: 768px) {
+  
+  /* Φέρνει τα βελάκια μέσα στην οθόνη */
+  .modal-nav {
+    background-color: rgba(255, 255, 255, 0.5); /* Πιο διακριτικά */
+  }
+  .modal-prev {
+    left: 10px; /* <-- ΑΛΛΑΓΗ (Από -50px) */
+  }
+  .modal-next {
+    right: 10px; /* <-- ΑΛΛΑΓΗ (Από -50px) */
+  }
+
+  /* Μετακινεί το (X) για να πατιέται εύκολα */
+  .modal-close-btn {
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
 </style>
