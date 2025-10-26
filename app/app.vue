@@ -457,7 +457,7 @@ onUnmounted(() => {
         <p class="hero-description">{{ bioData.description }}</p>
       </div>
       <div class="hero-image">
-        <img 
+        <NuxtImg 
           :src="bioData.image" 
           :alt="bioData.title" 
           format="webp" 
@@ -498,12 +498,12 @@ onUnmounted(() => {
       tag="main"
       name="list"
       :class="['content-grid', { 'is-shrinking': isShrinking }]"
-      v-if="activeCategory !== 'Επικοινωνία'"
+      v-show="activeCategory !== 'Επικοινωνία'" >
     >
       <template v-for="item in filteredItems" :key="item?.title">
         <article v-if="item" class="grid-item">
           <div class="item-image">
-            <img 
+            <NuxtImg 
               :src="item.image" 
               :alt="item.title" 
               format="webp" 
@@ -525,23 +525,23 @@ onUnmounted(() => {
 
     <section
       ref="contactContainer" 
-      v-else-if="activeCategory === 'Επικοινωνία' && contactItemData"
+      v-show="activeCategory === 'Επικοινωνία' && contactItemData" 
       class="contact-view"
     >
     
     <article class="grid-item">
       <div class="item-image">
-        <img 
-          :src="contactItemData.image" 
-          :alt="contactItemData.title" 
+        <NuxtImg 
+          :src="contactItemData!.image" 
+          :alt="contactItemData!.title" 
           format="webp" 
           quality="80"
           loading="lazy"
         />
       </div>
-      <h3 class="item-title">{{ contactItemData.title }}</h3>
-      <p class="item-description">{{ contactItemData.description }}</p>
-      <p class="item-date">{{ contactItemData.date }}</p>
+      <h3 class="item-title">{{ contactItemData!.title }}</h3>
+      <p class="item-description">{{ contactItemData!.description }}</p>
+      <p class="item-date">{{ contactItemData!.date }}</p>
     </article>
 
   <div class="contact-info-panel">
@@ -583,11 +583,10 @@ onUnmounted(() => {
   > -->
 
   <section
-  v-if="activeCategory === 'Δείγματα'"
-  ref="reelsContainerRef" 
-  class="reels-wrapper is-expanded" >
+v-show="activeCategory === 'Δείγματα'" ref="reelsContainerRef" 
+    class="reels-wrapper is-expanded"
+  >
 
-  
     <div class="reels-content">
       <div 
         v-for="(items, categoryName) in groupedSampleItems" 
@@ -605,7 +604,7 @@ onUnmounted(() => {
           @click="openModal(items, index)" >
             <div class="card-item">
               <div class="item-image">
-                <img 
+                <NuxtImg 
                   :src="item.image" 
                   :alt="item.title" 
                   format="webp" 
@@ -672,7 +671,7 @@ onUnmounted(() => {
           </button>
 
           <div class="modal-image-wrapper" v-if="activeModalList[activeModalIndex]">
-            <img 
+            <NuxtImg 
               :src="activeModalList[activeModalIndex]!.image" 
               :alt="activeModalList[activeModalIndex]!.title" 
               format="webp" 
