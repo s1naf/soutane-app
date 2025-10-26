@@ -29,7 +29,7 @@ const activeCategory = ref('Όλα');
 
 // Δεδομένα Hero (βιογραφικό)
 const bioData = {
-  image: '/images/Screenshot_1.png',
+  image: '/images/screenshot_1.png',
   title: 'Η Τέχνη μου',
   // Εμπλουτισμένο κείμενο:
   description: 'Η τέχνη του εκκλησιαστικού κεντήματος είναι μια προσευχή που γίνεται με χρυσό και μετάξι. Μια γέφυρα που ενώνει την παράδοση αιώνων με τη σύγχρονη αφοσίωση στην τελειότητα.',
@@ -42,7 +42,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_3.png',
+    image: '/images/screenshot_3.png',
     title: 'Λεπτομέρεια Υφάσματος',
     description: 'Εδώ, ο χρόνος μετριέται σε χιλιάδες βελονιές, καμωμένες μία προς μία στο χέρι για απαράμιλλη λεπτομέρεια.',
     date: 'Η ΤΕΧΝΗ ΜΑΣ'
@@ -50,7 +50,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_1.png',
+    image: '/images/screenshot_1.png',
     title: 'Ύψωσις Τιμίου Σταυρού',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -58,7 +58,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_2.png',
+    image: '/images/screenshot_2.png',
     title: 'Κέντημα Εικόνας',
     description: 'Αποτυπώνοντας το θείο με ιριδίζον μετάξι και χρυσοκλωστή. Κάθε κλωστή, ένας φόρος τιμής στην παράδοση.',
     date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
@@ -66,7 +66,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_6.png',
+    image: '/images/screenshot_6.png',
     title: 'Άγιος Γεώργιος ο Τροπαιοφόρος',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -74,7 +74,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_7.png',
+    image: '/images/screenshot_7.png',
     title: 'Εικόνα Αγίου Ιεράρχη',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -82,7 +82,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_9.png',
+    image: '/images/screenshot_9.png',
     title: 'Άγιος Παΐσιος ο Αγιορείτης',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -90,7 +90,7 @@ const allItems = [
    {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_17.png',
+    image: '/images/screenshot_17.png',
     title: 'Ο Καλός Ποιμήν (Χειροποίητο Πρόσωπο)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -98,7 +98,7 @@ const allItems = [
     {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_24.png',
+    image: '/images/screenshot_24.png',
     title: 'Χριστός Παντοκράτωρ (Κυκλική)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -106,7 +106,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_26.png',
+    image: '/images/screenshot_26.png',
     title: 'Η Ανάστασις (Μικροκέντημα Σταυροειδές)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -114,7 +114,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_29.png',
+    image: '/images/screenshot_29.png',
     title: 'Άγιος Ιωάννης ο Ελεήμων (Κάδρο)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -122,7 +122,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Εικόνες',
-    image: '/images/Screenshot_23.png',
+    image: '/images/screenshot_23.png',
     title: 'Χριστός Παντοκράτωρ (Κυκλική Βυσσινί)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΕΙΚΟΝΕΣ'
@@ -132,7 +132,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Άμφια',
-    image: '/images/Screenshot_10.png',
+    image: '/images/screenshot_10.png',
     title: 'Επιτραχήλιο (Σκηνή Σταύρωσης)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΑΜΦΙΑ'
@@ -140,7 +140,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Άμφια',
-    image: '/images/Screenshot_13.png',
+    image: '/images/screenshot_13.png',
     title: 'Εγκόλπιον Αρχιερατικό (Μικροκέντημα)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΑΜΦΙΑ'
@@ -148,7 +148,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Άμφια',
-    image: '/images/Screenshot_11.png',
+    image: '/images/screenshot_11.png',
     title: 'Ζεύγος Επιμανικίων (Χερουβείμ)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΑΜΦΙΑ'
@@ -156,7 +156,7 @@ const allItems = [
    {
     category: 'Δείγματα',
     subCategory: 'Άμφια',
-    image: '/images/Screenshot_22.png',
+    image: '/images/screenshot_22.png',
     title: 'Επιτραχήλιο (Κόκκινο)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΑΜΦΙΑ'
@@ -164,7 +164,7 @@ const allItems = [
    {
     category: 'Δείγματα',
     subCategory: 'Άμφια',
-    image: '/images/Screenshot_30.png',
+    image: '/images/screenshot_30.png',
     title: 'Φαιλόνιο (Κόκκινο)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΑΜΦΙΑ'
@@ -174,7 +174,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_5.png',
+    image: '/images/screenshot_5.png',
     title: 'Κάλυμμα Αγίας Τραπέζης',
     description: 'Ο σταυρός, κεντημένος με την παραδοσιακή τεχνική, συμβολίζει την αφοσίωση και την τέχνη.',
     date: 'ΑΦΟΣΙΩΣΗ ΣΤΗΝ ΤΕΧΝΗ'
@@ -182,7 +182,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_16.png',
+    image: '/images/screenshot_16.png',
     title: 'Η Ανάστασις (Κάλυμμα ή Λάβαρο)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -190,7 +190,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_18.png',
+    image: '/images/screenshot_18.png',
     title: 'Κάλυμμα Αγίας Τραπέζης (Αρχιερεύς)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -198,7 +198,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_15.png',
+    image: '/images/screenshot_15.png',
     title: 'Ο Μελισμός (Σετ Αγίας Τραπέζης)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -206,7 +206,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_12.png',
+    image: '/images/screenshot_12.png',
     title: 'Η Κοίμησις της Θεοτόκου (Επιτάφιος)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -214,7 +214,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_21.png',
+    image: '/images/screenshot_21.png',
     title: 'Σετ Λειτουργικών Καλυμμάτων (Λευκό)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -222,7 +222,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_25.png',
+    image: '/images/screenshot_25.png',
     title: 'Επιτάφιος (Βυσσινί Βελούδο)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -230,7 +230,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_27.png',
+    image: '/images/screenshot_27.png',
     title: 'Κάλυμμα Αγίου Ποτηρίου (Πελεκάνος)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -238,7 +238,7 @@ const allItems = [
    {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_28.png',
+    image: '/images/screenshot_28.png',
     title: 'Λεπτομέρεια Κεντήματος Υφάσματος (Βυσσινί)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
@@ -248,7 +248,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Λεπτομέρειες & Σχέδια',
-    image: '/images/Screenshot_8.png',
+    image: '/images/screenshot_8.png',
     title: 'Λεπτομέρεια Χρυσοκεντήματος (Στάχυ)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'Η ΤΕΧΝΗ ΜΑΣ'
@@ -256,7 +256,7 @@ const allItems = [
   {
     category: 'Δείγματα',
     subCategory: 'Λεπτομέρειες & Σχέδια',
-    image: '/images/Screenshot_19.png',
+    image: '/images/screenshot_19.png',
     title: 'Σχέδιο σε Ύφασμα (Στάχυ)',
     description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
     date: 'Η ΤΕΧΝΗ ΜΑΣ'
@@ -266,7 +266,7 @@ const allItems = [
   {
     category: 'Επικοινωνία',
     subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/Screenshot_4.png',
+    image: '/images/screenshot_4.png',
     title: 'Επικοινωνία',
     description: 'Έχετε ένα όραμα; Αναλαμβάνω ειδικές παραγγελίες, από νέα άμφια έως την ευλαβική αποκατάσταση παλαιών κεντημάτων.',
     date: 'ΕΠΙΚΟΙΝΩΝΙΑ'
@@ -277,18 +277,18 @@ const allItems = [
 const filteredItems = computed(() => {
   // --- "ΟΛΑ" ---
   if (activeCategory.value === 'Όλα') {
-    const item2 = allItems.find(item => item.image === '/images/Screenshot_2.png');
-    const item1 = allItems.find(item => item.image === '/images/Screenshot_5.png');
-    const item3 = allItems.find(item => item.image === '/images/Screenshot_3.png');
+    const item2 = allItems.find(item => item.image === '/images/screenshot_2.png');
+    const item1 = allItems.find(item => item.image === '/images/screenshot_5.png');
+    const item3 = allItems.find(item => item.image === '/images/screenshot_3.png');
     const contactItem = allItems.find(item => item.category === 'Επικοινωνία');
     return [item2, item1, item3, contactItem].filter(Boolean); // Φιλτράρει τυχόν null
   }
   
   // --- "ΔΕΙΓΜΑΤΑ" ---
   if (activeCategory.value === 'Δείγματα') {
-    const item2 = allItems.find(item => item.image === '/images/Screenshot_2.png');
-    const item1 = allItems.find(item => item.image === '/images/Screenshot_5.png');
-    const item3 = allItems.find(item => item.image === '/images/Screenshot_3.png');
+    const item2 = allItems.find(item => item.image === '/images/screenshot_2.png');
+    const item1 = allItems.find(item => item.image === '/images/screenshot_5.png');
+    const item3 = allItems.find(item => item.image === '/images/screenshot_3.png');
     return [item1, item2, item3].filter(Boolean); // Φιλτράρει τυχόν null
   }
   
