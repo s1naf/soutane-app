@@ -13,5 +13,13 @@ export default defineNuxtConfig({
   // Παραγωγή στατικών αρχείων με σωστές ρυθμίσεις για GitHub Pages
   nitro: {
     preset: 'github_pages'
+  },
+
+  image: {
+    // Λέμε στον default provider (ipx) να φτιάξει
+    // στατικές εικόνες κατά το "build"
+   image: {
+    provider: 'ipx'
+  }
   }
 })

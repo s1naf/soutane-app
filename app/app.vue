@@ -1,14 +1,9 @@
 <script setup lang="ts">
-
-// Βασικές εισαγωγές και composables
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
-
-// Swiper (carousel) components και βασικό CSS
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 
-
-// SEO: βασικές ρυθμίσεις
+// 1. Ρυθμίσεις SEO
 useHead({
   title: 'Χειροποίητα Εκκλησιαστικά Κεντήματα | [Όνομα Φίλης]',
   meta: [
@@ -22,29 +17,24 @@ useHead({
   ]
 });
 
-// Κατάσταση: ενεργή κατηγορία φίλτρου
+// 2. Κατάσταση
 const activeCategory = ref('Όλα');
 
-
-
-// Δεδομένα Hero (βιογραφικό)
+// 3. Δεδομένα
 const bioData = {
   image: '/images/screenshot_1.png',
   title: 'Η Τέχνη μου',
-  // Εμπλουτισμένο κείμενο:
-  description: 'Η τέχνη του εκκλησιαστικού κεντήματος είναι μια προσευχή που γίνεται με χρυσό και μετάξι. Μια γέφυρα που ενώνει την παράδοση αιώνων με τη σύγχρονη αφοσίωση στην τελειότητα.',
+  description: 'Η τέχνη του εκκλησιαστικού κεντήματος είναι μια προσευχή που γίνεται με χρυσό και μετάξι...',
   date: 'Η ΦΙΛΟΣΟΦΙΑ ΜΟΥ'
 };
 
-// Δεδομένα για το grid (χωρίς το Hero)
 const allItems = [
-  // --- SUB-CATEGORY: ΕΙΚΟΝΕΣ ---
   {
     category: 'Δείγματα',
     subCategory: 'Καλύμματα & Υφάσματα',
     image: '/images/screenshot_3.png',
     title: 'Λεπτομέρεια Υφάσματος',
-    description: 'Εδώ, ο χρόνος μετριέται σε χιλιάδες βελονιές, καμωμένες μία προς μία στο χέρι για απαράμιλλη λεπτομέρεια.',
+    description: 'Εδώ, ο χρόνος μετριέται σε χιλιάδες βελονιές...',
     date: 'Η ΤΕΧΝΗ ΜΑΣ'
   },
   {
@@ -60,348 +50,118 @@ const allItems = [
     subCategory: 'Καλύμματα & Υφάσματα',
     image: '/images/screenshot_2.png',
     title: 'Κέντημα Εικόνας',
-    description: 'Αποτυπώνοντας το θείο με ιριδίζον μετάξι και χρυσοκλωστή. Κάθε κλωστή, ένας φόρος τιμής στην παράδοση.',
+    description: 'Αποτυπώνοντας το θείο με ιριδίζον μετάξι...',
     date: 'ΔΕΙΓΜΑΤΑ ΕΡΓΩΝ'
   },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_6.png',
-    title: 'Άγιος Γεώργιος ο Τροπαιοφόρος',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_7.png',
-    title: 'Εικόνα Αγίου Ιεράρχη',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_9.png',
-    title: 'Άγιος Παΐσιος ο Αγιορείτης',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-   {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_17.png',
-    title: 'Ο Καλός Ποιμήν (Χειροποίητο Πρόσωπο)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-    {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_24.png',
-    title: 'Χριστός Παντοκράτωρ (Κυκλική)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_26.png',
-    title: 'Η Ανάστασις (Μικροκέντημα Σταυροειδές)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_29.png',
-    title: 'Άγιος Ιωάννης ο Ελεήμων (Κάδρο)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Εικόνες',
-    image: '/images/screenshot_23.png',
-    title: 'Χριστός Παντοκράτωρ (Κυκλική Βυσσινί)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΕΙΚΟΝΕΣ'
-  },
-
-  // --- SUB-CATEGORY: ΑΜΦΙΑ ---
-  {
-    category: 'Δείγματα',
-    subCategory: 'Άμφια',
-    image: '/images/screenshot_10.png',
-    title: 'Επιτραχήλιο (Σκηνή Σταύρωσης)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΑΜΦΙΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Άμφια',
-    image: '/images/screenshot_13.png',
-    title: 'Εγκόλπιον Αρχιερατικό (Μικροκέντημα)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΑΜΦΙΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Άμφια',
-    image: '/images/screenshot_11.png',
-    title: 'Ζεύγος Επιμανικίων (Χερουβείμ)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΑΜΦΙΑ'
-  },
-   {
-    category: 'Δείγματα',
-    subCategory: 'Άμφια',
-    image: '/images/screenshot_22.png',
-    title: 'Επιτραχήλιο (Κόκκινο)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΑΜΦΙΑ'
-  },
-   {
-    category: 'Δείγματα',
-    subCategory: 'Άμφια',
-    image: '/images/screenshot_30.png',
-    title: 'Φαιλόνιο (Κόκκινο)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΑΜΦΙΑ'
-  },
-
-  // --- SUB-CATEGORY: ΚΑΛΥΜΜΑΤΑ & ΥΦΑΣΜΑΤΑ ---
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_5.png',
-    title: 'Κάλυμμα Αγίας Τραπέζης',
-    description: 'Ο σταυρός, κεντημένος με την παραδοσιακή τεχνική, συμβολίζει την αφοσίωση και την τέχνη.',
-    date: 'ΑΦΟΣΙΩΣΗ ΣΤΗΝ ΤΕΧΝΗ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_16.png',
-    title: 'Η Ανάστασις (Κάλυμμα ή Λάβαρο)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_18.png',
-    title: 'Κάλυμμα Αγίας Τραπέζης (Αρχιερεύς)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_15.png',
-    title: 'Ο Μελισμός (Σετ Αγίας Τραπέζης)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_12.png',
-    title: 'Η Κοίμησις της Θεοτόκου (Επιτάφιος)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_21.png',
-    title: 'Σετ Λειτουργικών Καλυμμάτων (Λευκό)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_25.png',
-    title: 'Επιτάφιος (Βυσσινί Βελούδο)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_27.png',
-    title: 'Κάλυμμα Αγίου Ποτηρίου (Πελεκάνος)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-   {
-    category: 'Δείγματα',
-    subCategory: 'Καλύμματα & Υφάσματα',
-    image: '/images/screenshot_28.png',
-    title: 'Λεπτομέρεια Κεντήματος Υφάσματος (Βυσσινί)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'ΛΕΙΤΟΥΡΓΙΚΑ ΥΦΑΣΜΑΤΑ'
-  },
-
-  // --- SUB-CATEGORY: ΛΕΠΤΟΜΕΡΕΙΕΣ & ΣΧΕΔΙΑ ---
-  {
-    category: 'Δείγματα',
-    subCategory: 'Λεπτομέρειες & Σχέδια',
-    image: '/images/screenshot_8.png',
-    title: 'Λεπτομέρεια Χρυσοκεντήματος (Στάχυ)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'Η ΤΕΧΝΗ ΜΑΣ'
-  },
-  {
-    category: 'Δείγματα',
-    subCategory: 'Λεπτομέρειες & Σχέδια',
-    image: '/images/screenshot_19.png',
-    title: 'Σχέδιο σε Ύφασμα (Στάχυ)',
-    description: 'Συμπλήρωσε μια σύντομη περιγραφή για το έργο...',
-    date: 'Η ΤΕΧΝΗ ΜΑΣ'
-  },
-  
-  // --- CATEGORY: ΕΠΙΚΟΙΝΩΝΙΑ ---
+  // ... (βάλε όλες τις εικόνες σου εδώ)
   {
     category: 'Επικοινωνία',
-    subCategory: 'Καλύμματα & Υφάσματα',
     image: '/images/screenshot_4.png',
     title: 'Επικοινωνία',
-    description: 'Έχετε ένα όραμα; Αναλαμβάνω ειδικές παραγγελίες, από νέα άμφια έως την ευλαβική αποκατάσταση παλαιών κεντημάτων.',
+    description: 'Έχετε ένα όραμα; Αναλαμβάνω ειδικές παραγγελίες...',
     date: 'ΕΠΙΚΟΙΝΩΝΙΑ'
   },
 ];
 
-// Φιλτραρισμένη λίστα items
+// 4. Computed Properties
 const filteredItems = computed(() => {
-  // --- "ΟΛΑ" ---
   if (activeCategory.value === 'Όλα') {
-    const item2 = allItems.find(item => item.image === '/images/screenshot_2.png');
     const item1 = allItems.find(item => item.image === '/images/screenshot_5.png');
+    const item2 = allItems.find(item => item.image === '/images/screenshot_2.png');
     const item3 = allItems.find(item => item.image === '/images/screenshot_3.png');
     const contactItem = allItems.find(item => item.category === 'Επικοινωνία');
-    return [item2, item1, item3, contactItem].filter(Boolean); // Φιλτράρει τυχόν null
+    return [item1, item2, item3, contactItem].filter(Boolean);
   }
-  
-  // --- "ΔΕΙΓΜΑΤΑ" ---
   if (activeCategory.value === 'Δείγματα') {
-    const item2 = allItems.find(item => item.image === '/images/screenshot_2.png');
     const item1 = allItems.find(item => item.image === '/images/screenshot_5.png');
+    const item2 = allItems.find(item => item.image === '/images/screenshot_2.png');
     const item3 = allItems.find(item => item.image === '/images/screenshot_3.png');
-    return [item1, item2, item3].filter(Boolean); // Φιλτράρει τυχόν null
+    return [item1, item2, item3].filter(Boolean);
   }
-  
-  // --- "ΕΠΙΚΟΙΝΩΝΙΑ" (ή οτιδήποτε άλλο) ---
   return allItems.filter(item => item.category === activeCategory.value);
 });
 
-// Ταξινόμηση/σειρά φίλτρων
-const filterCategories = ['Όλα', 'Δείγματα', 'Επικοινωνία'];
-
-// Υπολογισμός τρέχοντος index φίλτρου
-const currentFilterIndex = computed(() => {
-  return filterCategories.indexOf(activeCategory.value);
-});
-
-// Μετρητής για transitions (χρήσιμο για leave/enter)
-const isShrinking = ref(false)
-watch(() => filteredItems.value.length, (next, prev) => {
-  if (prev !== undefined) isShrinking.value = next < prev
-})
-
-// Refs για DOM elements
-const gridContainer = ref(null);
-
-// Ref για το container με τα Reels
-const reelsContainerRef = ref(null);
-
-// Ref για το section "Επικοινωνία"
-const contactContainer = ref(null);
-
-// Ορατότητα για Reels
-const showReels = ref(false);
-
-// Ομαδοποίηση "Δείγματα" ανά subCategory
 const groupedSampleItems = computed(() => {
   const samples = allItems.filter(item => item.category === 'Δείγματα');
-  
   return samples.reduce((acc, item) => {
-    // Αν δεν υπάρχει subCategory, απλά αγνόησέ το
-    if (!item.subCategory) {
-      return acc; 
-    }
-    
-    const key = item.subCategory; // Παίρνουμε το κλειδί
-    
-    if (!acc[key]) {
-      acc[key] = []; 
-    }
+    if (!item.subCategory) return acc;
+    const key = item.subCategory;
+    if (!acc[key]) acc[key] = [];
     acc[key].push(item);
     return acc;
   }, {} as Record<string, typeof allItems>);
 });
 
-// Toggle εμφάνισης των Reels και ομαλό scroll στο container
-function toggleReelsView() {
-  // Αποθηκεύουμε την τρέχουσα κατάσταση
-  const wasHidden = !showReels.value;
-  
-  // Αλλάζουμε την κατάσταση (από true σε false ή το αντίστροφο)
-  showReels.value = !showReels.value;
+const contactItemData = computed(() => {
+  return allItems.find(item => item.category === 'Επικοινωνία');
+});
 
-  // Αν η κατάσταση ΗΤΑΝ "κρυμμένη" (και τώρα την ΑΝΟΙΞΑΜΕ)...
-  if (wasHidden) {
-    // ...κάνε scroll στο container
-    nextTick(() => {
-      if (reelsContainerRef.value) {
-        (reelsContainerRef.value as HTMLElement).scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    });
+const filterCategories = ['Όλα', 'Δείγματα', 'Επικοινωνία'];
+
+const currentFilterIndex = computed(() => {
+  return filterCategories.indexOf(activeCategory.value);
+});
+
+// 5. Refs
+const isShrinking = ref(false);
+const gridContainer = ref(null);
+const reelsContainerRef = ref(null);
+const contactContainer = ref(null);
+const showReels = ref(false);
+const isModalOpen = ref(false);
+const activeModalList = ref<typeof allItems>([]);
+const activeModalIndex = ref(0);
+
+// 6. Συναρτήσεις
+function openModal(itemsList: typeof allItems, clickedIndex: number) {
+  activeModalList.value = itemsList;
+  activeModalIndex.value = clickedIndex;
+  isModalOpen.value = true;
+}
+
+function closeModal() {
+  isModalOpen.value = false;
+}
+
+function nextModalItem() {
+  if (activeModalIndex.value < activeModalList.value.length - 1) {
+    activeModalIndex.value++;
   }
 }
-// Συναρτήσεις Scroll
+
+function prevModalItem() {
+  if (activeModalIndex.value > 0) {
+    activeModalIndex.value--;
+  }
+}
+
 function scrollToGrid() {
   if (gridContainer.value) {
-    (gridContainer.value as any).$el.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    (gridContainer.value as any).$el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
 function scrollToContact() {
   if (contactContainer.value) {
-    (contactContainer.value as HTMLElement).scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    (contactContainer.value as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
-// Κεντρικός χειριστής αλλαγής φίλτρων
 function handleFilterClick(newCategory: string, shouldScroll: boolean = true) {
-  showReels.value = false; // "Μηδενίζει" τα reels
+  showReels.value = false;
   activeCategory.value = newCategory;
 
-  if (shouldScroll) {
-    if (newCategory === 'Όλα' && process.client) {
+  // *** Η ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΟ [500] ERROR ΕΙΝΑΙ ΕΔΩ ***
+  if (shouldScroll && process.client) { // Ελέγχουμε αν είμαστε στον browser
+    if (newCategory === 'Όλα') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } 
-    else if (newCategory === 'Δείγματα') { 
+    } else if (newCategory === 'Δείγματα') {
       nextTick(() => { scrollToGrid(); });
-    } 
-    else if (newCategory === 'Επικοινωνία') { 
+    } else if (newCategory === 'Επικοινωνία') {
       nextTick(() => { scrollToContact(); });
     }
   }
 }
-
-// Λογική stepper φίλτρων
-
 
 function nextFilter() {
   const nextIndex = currentFilterIndex.value + 1;
@@ -416,61 +176,40 @@ function prevFilter() {
     handleFilterClick(filterCategories[prevIndex]!, false);
   }
 }
-// --- Modal state ---
-const isModalOpen = ref(false);
-const activeModalList = ref<typeof allItems>([]); // Η λίστα της υπο-κατηγορίας που βλέπουμε
-const activeModalIndex = ref(0);
 
-// Άνοιγμα modal με βάση τη λίστα και το index
-function openModal(itemsList: typeof allItems, clickedIndex: number) {
-  activeModalList.value = itemsList;
-  activeModalIndex.value = clickedIndex;
-  isModalOpen.value = true;
-}
-
-// 3. Συνάρτηση που κλείνει το Modal
-function closeModal() {
-  isModalOpen.value = false;
-}
-
-// 4. Συναρτήσεις πλοήγησης (Next/Prev) μέσα στο Modal
-function nextModalItem() {
-  if (activeModalIndex.value < activeModalList.value.length - 1) {
-    activeModalIndex.value++;
-  }
-}
-function prevModalItem() {
-  if (activeModalIndex.value > 0) {
-    activeModalIndex.value--;
+function toggleReelsView() {
+  const wasHidden = !showReels.value;
+  showReels.value = !showReels.value;
+  if (wasHidden) {
+    nextTick(() => {
+      if (reelsContainerRef.value) {
+        (reelsContainerRef.value as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   }
 }
 
-// 5. (BONUS) Πλοήγηση με βελάκια πληκτρολογίου
+// 7. Watchers & Listeners
+watch(() => filteredItems.value.length, (next, prev) => {
+  if (prev !== undefined) isShrinking.value = next < prev;
+});
+
 function handleKeydown(e: KeyboardEvent) {
-  if (!isModalOpen.value) return; // Αν το modal είναι κλειστό, μη κάνεις τίποτα
-
-  if (e.key === 'ArrowRight') {
-    nextModalItem();
-  } else if (e.key === 'ArrowLeft') {
-    prevModalItem();
-  } else if (e.key === 'Escape') {
-    closeModal();
-  }
+  if (!isModalOpen.value) return;
+  if (e.key === 'ArrowRight') nextModalItem();
+  else if (e.key === 'ArrowLeft') prevModalItem();
+  else if (e.key === 'Escape') closeModal();
 }
 
+// *** Η ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΟΥΣ LISTENERS ΕΙΝΑΙ ΕΔΩ ***
+// Αυτός ο κώδικας τρέχει ΜΟΝΟ στον client 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
 });
+
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
 });
-
-const contactItemData = computed(() => {
-  // Βρίσκουμε το item της επικοινωνίας από την αρχική λίστα
-  return allItems.find(item => item.category === 'Επικοινωνία');
-});
-
-
 
 </script>
 
