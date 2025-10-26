@@ -447,16 +447,15 @@ function prevModalItem() {
 
 // 5. (BONUS) Πλοήγηση με βελάκια πληκτρολογίου
 function handleKeydown(e: KeyboardEvent) {
-  if (!isModalOpen.value) return; // Αν δεν είναι ανοιχτό το modal, μην κάνεις τίποτα
+  if (!isModalOpen.value) return; // Αν το modal είναι κλειστό, μη κάνεις τίποτα
 
-if (process.client) {
-  onMounted(() => {
-    window.addEventListener('keydown', handleKeydown);
-  });
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeydown);
-  });
-}
+  if (e.key === 'ArrowRight') {
+    nextModalItem();
+  } else if (e.key === 'ArrowLeft') {
+    prevModalItem();
+  } else if (e.key === 'Escape') {
+    closeModal();
+  }
 }
 
 onMounted(() => {
@@ -533,7 +532,8 @@ const contactItemData = computed(() => {
         <button 
           type="button" 
           @click="prevFilter" 
-          :disabled="currentFilterIndex === 0">
+          v-if="currentFilterIndex > 0"
+          >
           &lt; {{ filterCategories[currentFilterIndex - 1] }}
         </button>
       </div>
@@ -546,7 +546,8 @@ const contactItemData = computed(() => {
         <button 
           type="button" 
           @click="nextFilter" 
-          :disabled="currentFilterIndex === filterCategories.length - 1">
+          v-if="currentFilterIndex < filterCategories.length - 1"
+          >
           {{ filterCategories[currentFilterIndex + 1] }} &gt;
         </button>
       </div>
@@ -1045,8 +1046,7 @@ margin: 40px 0;
 }
 
 /* --- ΝΕΟ CSS ΓΙΑ ΤΑ REELS --- */
-.reels-wrapper { /* ΣΩΣΤΟ ΟΝΟΜΑ (ίδιο με το template) */
-/* Αυτός είναι ο νέος στόχος του scroll */
+.reels-wrapper { 
 scroll-margin-top: 20px;
 width: 100%;
 }
