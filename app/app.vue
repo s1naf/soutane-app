@@ -499,7 +499,7 @@ onUnmounted(() => {
       name="list"
       :class="['content-grid', { 'is-shrinking': isShrinking }]"
       v-show="activeCategory !== 'Επικοινωνία'" >
-    >
+    
       <template v-for="item in filteredItems" :key="item?.title">
         <article v-if="item" class="grid-item">
           <div class="item-image">
