@@ -388,7 +388,7 @@ function handleFilterClick(newCategory: string, shouldScroll: boolean = true) {
   activeCategory.value = newCategory;
 
   if (shouldScroll) {
-    if (newCategory === 'Όλα') {
+    if (newCategory === 'Όλα' && process.client) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } 
     else if (newCategory === 'Δείγματα') { 
@@ -449,13 +449,14 @@ function prevModalItem() {
 function handleKeydown(e: KeyboardEvent) {
   if (!isModalOpen.value) return; // Αν δεν είναι ανοιχτό το modal, μην κάνεις τίποτα
 
-  if (e.key === 'ArrowRight') {
-    nextModalItem();
-  } else if (e.key === 'ArrowLeft') {
-    prevModalItem();
-  } else if (e.key === 'Escape') {
-    closeModal();
-  }
+if (process.client) {
+  onMounted(() => {
+    window.addEventListener('keydown', handleKeydown);
+  });
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown);
+  });
+}
 }
 
 onMounted(() => {
