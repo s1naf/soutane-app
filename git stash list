@@ -1,0 +1,10 @@
+[33mcf888b5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull --rebase origin main (finish): returning to refs/heads/main
+[33mcf888b5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: pull --rebase origin main (pick): ci(pages): configure Pages and stabilize workflow
+[33m7daa302[m HEAD@{2}: pull --rebase origin main (start): checkout 7daa302e0334c36cbc047fb63fec64484f00a7bc
+[33mea9b59a[m HEAD@{3}: commit: ci(pages): configure Pages and stabilize workflow
+[33m54f6ab4[m HEAD@{4}: commit: Config for IOGIT
+[33m2494374[m[33m ([m[1;31morigin/develop[m[33m)[m HEAD@{5}: checkout: moving from feature/reels to main
+[33m2c2a38e[m[33m ([m[1;32mfeature/reels[m[33m)[m HEAD@{6}: commit: Config for github page
+[33m4585e5e[m[33m ([m[1;31morigin/feature/reels[m[33m)[m HEAD@{7}: commit: Contract field Done.Divider in show more, was fixed.
+[33m6d6b4ac[m HEAD@{8}: checkout: moving from main to feature/reels
+[33m2494374[m[33m ([m[1;31morigin/develop[m[33m)[m HEAD@{9}: clone: from https://github.com/s1naf/soutane-app.git
