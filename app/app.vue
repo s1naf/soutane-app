@@ -107,7 +107,7 @@ const isShrinking = ref(false);
 const gridContainer = ref(null);
 const reelsContainerRef = ref(null);
 const contactContainer = ref(null);
-const showReels = ref(false);
+const showReels = ref(true);
 const isModalOpen = ref(false);
 const activeModalList = ref<typeof allItems>([]);
 const activeModalIndex = ref(0);
@@ -148,7 +148,7 @@ function scrollToContact() {
 }
 
 function handleFilterClick(newCategory: string, shouldScroll: boolean = true) {
-  showReels.value = false;
+  // showReels.value = false;
   activeCategory.value = newCategory;
 
   // *** Η ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΟ [500] ERROR ΕΙΝΑΙ ΕΔΩ ***
@@ -177,17 +177,17 @@ function prevFilter() {
   }
 }
 
-function toggleReelsView() {
-  const wasHidden = !showReels.value;
-  showReels.value = !showReels.value;
-  if (wasHidden) {
-    nextTick(() => {
-      if (reelsContainerRef.value) {
-        (reelsContainerRef.value as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
-}
+// function toggleReelsView() {
+//   const wasHidden = !showReels.value;
+//   showReels.value = !showReels.value;
+//   if (wasHidden) {
+//     nextTick(() => {
+//       if (reelsContainerRef.value) {
+//         (reelsContainerRef.value as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+//       }
+//     });
+//   }
+// }
 
 // 7. Watchers & Listeners
 watch(() => filteredItems.value.length, (next, prev) => {
@@ -375,11 +375,18 @@ onUnmounted(() => {
  
 
   
-  <section
+  <!-- <section
     v-if="activeCategory === 'Δείγματα'"
     ref="reelsContainerRef" 
     :class="['reels-wrapper', { 'is-expanded': showReels }]"
-  >
+  > -->
+
+  <section
+  v-if="activeCategory === 'Δείγματα'"
+  ref="reelsContainerRef" 
+  class="reels-wrapper is-expanded" >
+
+  
     <div class="reels-content">
       <div 
         v-for="(items, categoryName) in groupedSampleItems" 
@@ -411,13 +418,13 @@ onUnmounted(() => {
         </Swiper>
       </div>
     </div>
-    <div class="reels-controller">
+    <!-- <div class="reels-controller">
       <hr v-if="showReels" />
       <button type="button" @click="toggleReelsView" class="reels-toggle-button">
         <span v-if="!showReels">Προβολή ανά Κατηγορία</span>
         <span v-else>Απόκρυψη</span>
       </button>
-    </div>
+    </div> -->
 
   </section>
 
@@ -789,23 +796,25 @@ margin: 40px 0;
 scroll-margin-top: 20px;
 width: 100%;
 }
+
+
+/* REMOVED REELS CSS FOR EXPANSION TO ALWAYS BE OPEN */
+/* 
 .reels-content {
-  max-height: 300px; /* Ξεκινάει "κλειστό" (teaser) */
+  max-height: 300px;
   overflow: hidden;
   transition: max-height 0.6s ease-in-out;
-  
-  /* * ΑΥΤΟ ΕΙΝΑΙ ΤΟ "ΑΧΝΟΦΑΙΝΕΣΘΑΙ"
-   * Δημιουργεί μια μάσκα που "σβήνει" το περιεχόμενο στο κάτω μέρος.
-  */
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-}
+} */
 
-.reels-wrapper.is-expanded .reels-content {
-  max-height: 10000px; /* "Ανοίγει" (ένας μεγάλος αριθμός) */
-  -webkit-mask-image: none; /* Αφαιρεί τη μάσκα */
+
+/* REMOVED REELS CSS FOR EXPANSION TO ALWAYS BE OPEN */
+/* .reels-wrapper.is-expanded .reels-content {
+  max-height: 10000px; 
+  -webkit-mask-image: none; 
   mask-image: none;
-}
+} */
 
 .reels-wrapper {
   position: relative;
@@ -813,17 +822,19 @@ width: 100%;
   margin-top: 40px; /* Κενό από το grid */
 }
 
-.reels-controller {
+
+/* REMOVED REELS CSS FOR EXPANSION TO ALWAYS BE OPEN */
+/* .reels-controller {
   text-align: center;
-  margin-top: -30px; /* Το τραβάει λίγο προς τα πάνω */
-  position: relative; /* Για να είναι πάνω από τη μάσκα */
-  z-index: 2; /* Πάνω από τη μάσκα, κάτω από το περιεχόμενο */
-  
-  /* Όταν ανοίξει, παίρνει τη φυσιολογική του θέση */
+  margin-top: -30px; 
+  position: relative; 
+  z-index: 2; 
   transition: margin-top 0.6s ease;
-}
-.reels-wrapper.is-expanded .reels-controller {
-  margin-top: 20px; /* Πάει στο κάτω μέρος */
+} */
+
+/* REMOVED REELS CSS FOR EXPANSION TO ALWAYS BE OPEN */
+/* .reels-wrapper.is-expanded .reels-controller {
+  margin-top: 20px;
 }
 
 .reels-controller hr {
@@ -849,7 +860,7 @@ width: 100%;
 
 .reel-category {
   margin-bottom: 40px; /* Κενό μεταξύ των carousels */
-}
+
 
 .reel-category-title {
   font-size: 1.8rem;
