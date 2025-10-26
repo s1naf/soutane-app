@@ -382,7 +382,7 @@ onUnmounted(() => {
   > -->
 
   <section
-  v-if="activeCategory === 'Δείγματα'"
+  
   ref="reelsContainerRef" 
   class="reels-wrapper is-expanded" >
 
