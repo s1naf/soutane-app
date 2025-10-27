@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation } from 'swiper/modules';
+
 import 'swiper/css';
+import 'swiper/css/navigation';
 
 // 1. Ρυθμίσεις SEO
 useHead({
@@ -312,6 +315,7 @@ const showReels = ref(true);
 const isModalOpen = ref(false);
 const activeModalList = ref<typeof allItems>([]);
 const activeModalIndex = ref(0);
+const swiperModules = [Navigation];
 
 // 6. Συναρτήσεις
 function openModal(itemsList: typeof allItems, clickedIndex: number) {
@@ -424,7 +428,7 @@ onUnmounted(() => {
 
 
       <nav class="main-nav">
-        <span>Filter:</span>
+        <span>Μενου:</span>
         <button 
           type="button" 
           @click="handleFilterClick('Όλα')"  
@@ -597,6 +601,8 @@ v-show="activeCategory === 'Δείγματα'" ref="reelsContainerRef"
         <Swiper
           :slides-per-view="'auto'"
           :space-between="20"
+          :navigation="true" 
+          :modules="swiperModules" 
         >
         <SwiperSlide 
           v-for="(item, index) in items" :key="item.title"
@@ -1060,6 +1066,40 @@ width: 100%;
 
 .reel-category {
   margin-bottom: 40px; /* Κενό μεταξύ των carousels */
+
+  /* --- ΝΕΟ: Στυλ για τα Βελάκια του Swiper --- */
+.reel-category :deep(.swiper-button-prev),
+.reel-category :deep(.swiper-button-next) {
+  /* Τα κάνουμε σκούρα για να φαίνονται */
+  color: #1a1a1a; 
+  
+  /* Προαιρετικό: Λευκό background για να ξεχωρίζουν */
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+/* Στυλ όταν κάνεις hover */
+.reel-category :deep(.swiper-button-prev:hover),
+.reel-category :deep(.swiper-button-next:hover) {
+  background-color: #ffffff;
+}
+
+/* Μικραίνει το ίδιο το εικονίδιο του βέλους */
+.reel-category :deep(.swiper-button-prev:after),
+.reel-category :deep(.swiper-button-next:after) {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Στυλ όταν ένα βελάκι είναι απενεργοποιημένο (π.χ. στην αρχή) */
+.reel-category :deep(.swiper-button-disabled) {
+  opacity: 0.1;
+  cursor: not-allowed;
+}
 
 
 .reel-category-title {
