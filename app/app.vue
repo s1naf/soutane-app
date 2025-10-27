@@ -889,6 +889,7 @@ v-show="activeCategory === 'Δείγματα'" ref="reelsContainerRef"
   margin-bottom: 30px; 
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+  
 }
 
 .filter-stepper-nav button {
@@ -901,14 +902,17 @@ v-show="activeCategory === 'Δείγματα'" ref="reelsContainerRef"
   padding: 10px;
   color: #1a1a1a;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .stepper-prev {
   justify-self: start;
+  padding-right: 13px; /* Προσθέτει "αέρα" δεξιά από το αριστερό κουμπί */
 }
 /* Στοίχιση για το δεξί κουμπί */
 .stepper-next {
   justify-self: end;
+  padding-left: 16px; /* Προσθέτει "αέρα" αριστερά από το δεξί κουμπί */
 }
 
 
@@ -930,6 +934,7 @@ v-show="activeCategory === 'Δείγματα'" ref="reelsContainerRef"
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  padding: 0 16px;
 }
 /* Responsive για το filter-stepper */
 @media (max-width: 640px) {
